@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WiFiPro • Hamburger Menu dengan Semua Fitur</title>
+    <title>flō • Zero • Premium Minimalist</title>
     
-    <!-- Font Awesome -->
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -19,390 +19,683 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
         }
 
         body {
-            background: #0a0a0f;
-            color: white;
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+            position: relative;
             overflow-x: hidden;
         }
 
-        /* LOGIN PAGE */
+        /* Premium Background */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(16, 185, 129, 0.15) 0%, transparent 50%),
+                        linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            z-index: -1;
+        }
+
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJmIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjc0IiBudW1PY3RhdmVzPSIzIiAvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNmKSIgb3BhY2l0eT0iMC4wMjUiIC8+PC9zdmc+');
+            opacity: 0.4;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Login Page */
         .login-page {
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 9999;
+            backdrop-filter: blur(10px);
         }
 
         .login-card {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 50px;
-            border-radius: 30px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 48px;
             width: 90%;
-            max-width: 450px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 440px;
+            box-shadow: var(--shadow-xl);
+            animation: float 6s ease-in-out infinite;
         }
 
-        .login-card h1 {
-            color: #333;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
-        .login-card input {
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--gray));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -2px;
+        }
+
+        .login-header p {
+            color: var(--gray);
+            font-size: 0.9em;
+            margin-top: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+            font-size: 1.1em;
+        }
+
+        .input-group input {
             width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: 2px solid #e0e0e0;
-            border-radius: 15px;
-            font-size: 1em;
-        }
-
-        .login-card button {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 16px 20px 16px 48px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
             color: white;
-            border: none;
-            border-radius: 15px;
-            font-size: 1.2em;
-            cursor: pointer;
-            margin-top: 20px;
+            font-size: 0.95em;
+            transition: all 0.3s;
         }
 
-        /* MAIN APP */
+        .input-group input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-size: 1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -5px var(--primary);
+        }
+
+        /* Main App */
         .main-app {
             display: none;
             min-height: 100vh;
-            background: #0a0a0f;
         }
 
-        /* HEADER WITH HAMBURGER MENU */
+        /* Premium Header */
         .app-header {
-            background: #1a1a2e;
-            padding: 15px 30px;
-            border-bottom: 3px solid #667eea;
-            position: sticky;
-            top: 0;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
             z-index: 100;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-        }
-
-        .header-container {
-            max-width: 1600px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 16px 24px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 100px;
+            box-shadow: var(--shadow-lg);
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 24px;
         }
 
-        /* HAMBURGER MENU BUTTON - 3 GARIS */
-        .hamburger-btn {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 15px;
+        /* Minimalist Hamburger */
+        .hamburger {
+            width: 48px;
+            height: 48px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             gap: 6px;
             cursor: pointer;
+            border-radius: 50%;
             transition: all 0.3s;
-            border: 2px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.02);
         }
 
-        .hamburger-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+        .hamburger:hover {
+            background: rgba(255, 255, 255, 0.05);
         }
 
-        .hamburger-btn span {
-            width: 25px;
-            height: 3px;
+        .hamburger span {
+            width: 20px;
+            height: 2px;
             background: white;
-            border-radius: 3px;
+            border-radius: 4px;
             transition: all 0.3s;
         }
 
-        /* ANIMASI HAMBURGER MENJADI X */
-        .hamburger-btn.active span:nth-child(1) {
-            transform: rotate(45deg) translate(6px, 6px);
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+            width: 20px;
         }
 
-        .hamburger-btn.active span:nth-child(2) {
+        .hamburger.active span:nth-child(2) {
             opacity: 0;
+            transform: translateX(-10px);
         }
 
-        .hamburger-btn.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(6px, -6px);
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+            width: 20px;
         }
 
         .logo {
-            font-size: 1.8em;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5em;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #fff, var(--gray));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .user-info {
+        .header-right {
             display: flex;
             align-items: center;
-            gap: 25px;
+            gap: 24px;
         }
 
-        .notification-badge {
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.3s;
             position: relative;
+        }
+
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
         }
 
         .badge {
             position: absolute;
             top: -5px;
             right: -5px;
-            background: #ff7675;
+            background: var(--primary);
             color: white;
             font-size: 0.7em;
             padding: 2px 6px;
-            border-radius: 10px;
+            border-radius: 20px;
+            border: 2px solid var(--dark);
         }
 
-        .user-avatar {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+        /* Clickable Profile with Dropdown */
+        .profile-container {
+            position: relative;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px 8px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .user-profile:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--glass-border);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2em;
-            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
         }
 
-        /* SIDEBAR MENU - MUNCUL DARI KIRI */
-        .sidebar-menu {
+        .profile-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            width: 240px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 8px;
+            box-shadow: var(--shadow-xl);
+            display: none;
+            z-index: 1000;
+        }
+
+        .profile-dropdown.active {
+            display: block;
+            animation: dropdownFade 0.2s ease;
+        }
+
+        @keyframes dropdownFade {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--glass-border);
+            margin-bottom: 8px;
+        }
+
+        .dropdown-header .name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .dropdown-header .email {
+            color: var(--gray);
+            font-size: 0.85em;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--light);
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .dropdown-item i {
+            width: 20px;
+            color: var(--gray);
+        }
+
+        .dropdown-item.logout {
+            color: #ef4444;
+            margin-top: 8px;
+            border-top: 1px solid var(--glass-border);
+            border-radius: 0;
+            padding-top: 16px;
+        }
+
+        .dropdown-item.logout i {
+            color: #ef4444;
+        }
+
+        /* Sidebar Menu */
+        .sidebar {
             position: fixed;
             top: 0;
-            left: -350px;
-            width: 320px;
+            left: -400px;
+            width: 360px;
             height: 100vh;
-            background: #1a1a2e;
-            border-right: 2px solid #2a2a3e;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(30px);
+            border-right: 1px solid var(--glass-border);
             z-index: 1000;
-            transition: left 0.3s ease;
+            transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             overflow-y: auto;
-            box-shadow: 5px 0 30px rgba(0,0,0,0.5);
+            box-shadow: var(--shadow-xl);
         }
 
-        .sidebar-menu.open {
+        .sidebar.open {
             left: 0;
         }
 
         .sidebar-header {
-            padding: 25px;
-            border-bottom: 2px solid #2a2a3e;
-            background: linear-gradient(135deg, #667eea20, #764ba220);
+            padding: 32px;
+            border-bottom: 1px solid var(--glass-border);
         }
 
         .sidebar-header h2 {
-            font-size: 1.5em;
-            color: white;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8em;
+            font-weight: 600;
+            letter-spacing: -1px;
+            margin-bottom: 4px;
         }
 
         .sidebar-header p {
-            color: #888;
+            color: var(--gray);
             font-size: 0.9em;
-            margin-top: 5px;
         }
 
-        .menu-section {
-            padding: 20px 0;
-            border-bottom: 1px solid #2a2a3e;
+        .sidebar-content {
+            padding: 24px 16px;
         }
 
-        .menu-title {
-            padding: 0 25px;
-            color: #888;
-            font-size: 0.8em;
+        .menu-group {
+            margin-bottom: 32px;
+        }
+
+        .menu-group-title {
+            padding: 0 16px;
+            margin-bottom: 8px;
+            color: var(--gray);
+            font-size: 0.75em;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 10px;
-        }
-
-        .menu-items {
-            display: flex;
-            flex-direction: column;
         }
 
         .menu-item {
-            padding: 15px 25px;
+            padding: 12px 16px;
             display: flex;
             align-items: center;
-            gap: 15px;
-            color: #ddd;
-            text-decoration: none;
-            transition: all 0.3s;
-            border-left: 3px solid transparent;
+            gap: 12px;
+            border-radius: 16px;
+            color: var(--light);
             cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 2px;
         }
 
         .menu-item:hover {
-            background: #252539;
-            border-left-color: #667eea;
+            background: rgba(255, 255, 255, 0.03);
         }
 
         .menu-item.active {
-            background: linear-gradient(135deg, #667eea20, #764ba220);
-            border-left-color: #667eea;
-            color: white;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(79, 70, 229, 0.1));
+            border-left: 3px solid var(--primary);
         }
 
         .menu-item i {
-            width: 25px;
-            color: #667eea;
-            font-size: 1.2em;
+            width: 24px;
+            color: var(--primary);
+            font-size: 1.1em;
         }
 
         .menu-item.active i {
             color: white;
         }
 
+        .menu-item span {
+            flex: 1;
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+
         .menu-badge {
-            background: #667eea;
-            color: white;
-            font-size: 0.7em;
-            padding: 2px 8px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 8px;
             border-radius: 20px;
-            margin-left: auto;
+            font-size: 0.7em;
+            color: var(--gray);
         }
 
-        .menu-footer {
-            padding: 25px;
-            border-top: 2px solid #2a2a3e;
-            margin-top: 20px;
+        .sidebar-footer {
+            padding: 24px 32px;
+            border-top: 1px solid var(--glass-border);
         }
 
-        .menu-footer .menu-item {
-            padding: 15px 0;
-        }
-
-        /* OVERLAY SAAT MENU DIBUKA */
         .menu-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(3px);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
             z-index: 999;
-            display: none;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
         }
 
         .menu-overlay.active {
-            display: block;
+            opacity: 1;
+            pointer-events: auto;
         }
 
-        /* CONTENT AREA */
-        .content-area {
-            padding: 30px;
+        /* Main Content */
+        .main-content {
+            margin-top: 100px;
+            padding: 40px;
             max-width: 1400px;
-            margin: 0 auto;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.3s;
         }
 
-        /* SECTION */
+        /* Sections */
         .section {
             display: none;
+            animation: fadeIn 0.3s ease;
         }
 
         .section.active {
             display: block;
         }
 
-        /* STATS CARDS */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Premium Cards */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
         }
 
         .stat-card {
-            background: #1a1a2e;
-            border: 1px solid #2a2a3e;
-            border-radius: 20px;
-            padding: 25px;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 24px;
             transition: all 0.3s;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
-            border-color: #667eea;
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.3);
+            box-shadow: 0 20px 40px -20px var(--primary);
         }
 
         .stat-icon {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3em;
+            margin-bottom: 16px;
+        }
+
+        .stat-value {
+            font-size: 2.2em;
+            font-weight: 600;
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+
+        /* Quick Add Widget */
+        .quick-add-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .quick-add-card {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 28px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .quick-add-card:hover {
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
+
+        .quick-add-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5em;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        .stat-value {
-            font-size: 2.5em;
-            font-weight: 700;
+        .quick-add-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
-        .stat-label {
-            color: #888;
+        .quick-add-desc {
+            color: var(--gray);
+            font-size: 0.9em;
         }
 
-        /* FEATURE GRID */
+        /* Feature Grid */
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
+            gap: 24px;
+            margin-bottom: 32px;
         }
 
         .feature-card {
-            background: #1a1a2e;
-            border: 1px solid #2a2a3e;
-            border-radius: 20px;
-            padding: 25px;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 24px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .feature-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .feature-header i {
+            width: 32px;
+            height: 32px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
         }
 
         .feature-title {
-            font-size: 1.2em;
+            font-size: 1.1em;
             font-weight: 600;
-            margin-bottom: 15px;
         }
 
-        /* TABLES */
+        /* Table */
         .table-container {
-            background: #1a1a2e;
-            border: 1px solid #2a2a3e;
-            border-radius: 20px;
-            padding: 25px;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 24px;
             overflow-x: auto;
         }
 
@@ -413,136 +706,151 @@
 
         th {
             text-align: left;
-            padding: 15px;
-            color: #667eea;
-            border-bottom: 2px solid #2a2a3e;
+            padding: 16px;
+            color: var(--gray);
+            font-weight: 500;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--glass-border);
         }
 
         td {
-            padding: 15px;
-            border-bottom: 1px solid #2a2a3e;
+            padding: 16px;
+            border-bottom: 1px solid var(--glass-border);
+            font-size: 0.95em;
         }
 
-        /* MAP SECTION */
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: 0.8em;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--secondary);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--accent);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        /* Map Section */
         .map-container {
-            background: #1a1a2e;
-            border: 1px solid #2a2a3e;
-            border-radius: 20px;
-            padding: 25px;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 24px;
         }
 
         #map {
             height: 500px;
-            border-radius: 15px;
+            border-radius: 20px;
             overflow: hidden;
             margin-bottom: 20px;
         }
 
-        .map-tools {
+        .map-controls {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
             margin-bottom: 20px;
         }
 
         .map-btn {
-            padding: 12px 20px;
-            background: #252539;
-            border: 1px solid #2a2a3e;
-            border-radius: 12px;
-            color: white;
+            padding: 10px 18px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            color: var(--light);
+            font-size: 0.9em;
             cursor: pointer;
+            transition: all 0.2s;
             display: flex;
             align-items: center;
             gap: 8px;
-            transition: all 0.3s;
         }
 
         .map-btn:hover {
-            background: #667eea;
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--primary);
         }
 
-        /* ACCURACY PANEL */
-        .accuracy-panel {
-            background: #1a1a2e;
-            border: 1px solid #2a2a3e;
-            border-radius: 15px;
+        .map-btn i {
+            color: var(--primary);
+        }
+
+        /* GPS Accuracy Panel */
+        .gps-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
             padding: 20px;
             margin-top: 20px;
         }
 
         .accuracy-meter {
-            height: 8px;
-            background: #252539;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             overflow: hidden;
-            margin: 10px 0;
+            margin: 12px 0;
         }
 
         .accuracy-fill {
             height: 100%;
-            background: linear-gradient(90deg, #00b894, #00cec9);
-            width: 98%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            border-radius: 10px;
         }
 
         .coord-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 15px;
+            gap: 16px;
+            margin-top: 16px;
         }
 
-        .coord-box {
-            background: #252539;
-            border-radius: 10px;
-            padding: 10px;
+        .coord-item {
             text-align: center;
         }
 
-        /* BUTTONS */
-        .btn {
-            padding: 12px 25px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1em;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
+        .coord-label {
+            color: var(--gray);
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
         }
 
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #667eea;
+        .coord-value {
+            font-size: 1.1em;
+            font-weight: 500;
+            font-family: monospace;
+            color: var(--primary);
         }
 
-        /* STATUS BADGES */
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 0.85em;
-            display: inline-block;
-        }
-
-        .status-active {
-            background: rgba(0, 184, 148, 0.2);
-            color: #00b894;
-        }
-
-        .status-warning {
-            background: rgba(253, 203, 110, 0.2);
-            color: #fdcb6e;
-        }
-
-        .status-danger {
-            background: rgba(255, 118, 117, 0.2);
-            color: #ff7675;
-        }
-
-        /* MODAL */
+        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -550,7 +858,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
@@ -561,12 +870,26 @@
         }
 
         .modal-content {
-            background: #1a1a2e;
-            border: 1px solid #667eea;
-            border-radius: 25px;
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
             padding: 40px;
             max-width: 500px;
             width: 90%;
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            margin-bottom: 24px;
+            font-size: 1.8em;
+            font-weight: 600;
         }
 
         .form-group {
@@ -576,97 +899,194 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #888;
+            color: var(--gray);
+            font-size: 0.9em;
         }
 
         .form-group input,
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 12px 15px;
-            background: #252539;
-            border: 1px solid #2a2a3e;
-            border-radius: 10px;
+            padding: 14px 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
             color: white;
+            font-size: 0.95em;
+            transition: all 0.2s;
         }
 
-        /* RESPONSIVE */
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 40px;
+            color: white;
+            font-size: 0.95em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px -10px var(--primary);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.02);
+            box-shadow: none;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .header-left .logo {
-                display: none;
-            }
-            
-            .user-info span:not(.user-avatar) {
-                display: none;
-            }
-            
-            .content-area {
+            .main-content {
                 padding: 20px;
             }
+            
+            .header-right .icon-btn:not(:first-child) {
+                display: none;
+            }
+            
+            .quick-add-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                width: 100%;
+                left: -100%;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
         }
     </style>
 </head>
 <body>
+    <div class="bg-gradient"></div>
+    <div class="noise"></div>
+
     <!-- LOGIN PAGE -->
     <div class="login-page" id="loginPage">
         <div class="login-card">
-            <h1><i class="fas fa-wifi"></i> WiFiPro</h1>
-            <p style="color: #666; margin-bottom: 30px;">Hamburger Menu • 3 Garis Kiri Atas</p>
+            <div class="login-header">
+                <h1>flō</h1>
+                <p>Zero • Premium Minimalist</p>
+            </div>
             <form id="loginForm">
-                <input type="text" placeholder="Username" id="username" value="admin" required>
-                <input type="password" placeholder="Password" id="password" value="admin123" required>
-                <button type="submit"><i class="fas fa-sign-in-alt"></i> MASUK</button>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Username" id="username" value="admin" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Password" id="password" value="admin123" required>
+                </div>
+                <button type="submit" class="login-btn">Sign in</button>
             </form>
         </div>
     </div>
 
     <!-- MAIN APP -->
     <div class="main-app" id="mainApp">
-        <!-- HEADER DENGAN HAMBURGER MENU (3 GARIS KIRI ATAS) -->
+        <!-- Premium Header -->
         <header class="app-header">
-            <div class="header-container">
-                <div class="header-left">
-                    <!-- TOMBOL HAMBURGER 3 GARIS -->
-                    <div class="hamburger-btn" id="hamburgerBtn" onclick="toggleMenu()">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                    </div>
-                    <div class="logo">
-                        <i class="fas fa-wifi"></i> WiFiPro
-                    </div>
+            <div class="header-left">
+                <div class="hamburger" id="hamburgerBtn" onclick="toggleMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </div>
-                <div class="user-info">
-                    <div class="notification-badge">
-                        <i class="fas fa-bell" style="font-size: 1.3em;"></i>
-                        <span class="badge">3</span>
+                <div class="logo">flō</div>
+            </div>
+            <div class="header-right">
+                <div class="icon-btn">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="icon-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">0</span>
+                </div>
+                <div class="icon-btn">
+                    <i class="fas fa-envelope"></i>
+                    <span class="badge">0</span>
+                </div>
+                
+                <!-- Clickable Profile with Dropdown -->
+                <div class="profile-container">
+                    <div class="user-profile" onclick="toggleProfileDropdown()">
+                        <div class="avatar">A</div>
+                        <span>Admin</span>
+                        <i class="fas fa-chevron-down" style="font-size: 0.8em; color: var(--gray);"></i>
                     </div>
-                    <div class="notification-badge">
-                        <i class="fas fa-envelope" style="font-size: 1.3em;"></i>
-                        <span class="badge">5</span>
+                    
+                    <!-- Dropdown Menu -->
+                    <div class="profile-dropdown" id="profileDropdown">
+                        <div class="dropdown-header">
+                            <div class="name">Admin User</div>
+                            <div class="email">admin@flow.com</div>
+                        </div>
+                        <div class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
+                        </div>
+                        <div class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </div>
+                        <div class="dropdown-item">
+                            <i class="fas fa-help"></i>
+                            <span>Help</span>
+                        </div>
+                        <div class="dropdown-item logout" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </div>
                     </div>
-                    <div class="user-avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <span>Admin</span>
                 </div>
             </div>
         </header>
 
-        <!-- OVERLAY SAAT MENU DIBUKA -->
-        <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
-
-        <!-- SIDEBAR MENU (MUNCUL DARI KIRI KETIKA HAMBURGER DI KLIK) -->
-        <div class="sidebar-menu" id="sidebarMenu">
+        <!-- Sidebar Menu -->
+        <div class="sidebar" id="sidebarMenu">
             <div class="sidebar-header">
-                <h2><i class="fas fa-wifi"></i> WiFiPro Menu</h2>
-                <p>v2.0 • 14 Menu • 50+ Fitur</p>
+                <h2>flō</h2>
+                <p>Zero • Premium</p>
             </div>
-
-            <!-- SEMUA MENU DAN FITUR ADA DI SINI -->
-            <div class="menu-section">
-                <div class="menu-title">MAIN MENU</div>
-                <div class="menu-items">
+            <div class="sidebar-content">
+                <div class="menu-group">
+                    <div class="menu-group-title">Main</div>
                     <div class="menu-item active" onclick="showSection('dashboard'); closeMenu()">
                         <i class="fas fa-chart-pie"></i>
                         <span>Dashboard</span>
@@ -674,11 +1094,11 @@
                     <div class="menu-item" onclick="showSection('customers'); closeMenu()">
                         <i class="fas fa-users"></i>
                         <span>Customers</span>
-                        <span class="menu-badge">127</span>
+                        <span class="menu-badge">0</span>
                     </div>
                     <div class="menu-item" onclick="showSection('maps'); closeMenu()">
                         <i class="fas fa-map-marked-alt"></i>
-                        <span>Maps & Location</span>
+                        <span>Maps</span>
                         <span class="menu-badge">GPS</span>
                     </div>
                     <div class="menu-item" onclick="showSection('analytics'); closeMenu()">
@@ -686,11 +1106,9 @@
                         <span>Analytics</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="menu-section">
-                <div class="menu-title">MANAGEMENT</div>
-                <div class="menu-items">
+                <div class="menu-group">
+                    <div class="menu-group-title">Management</div>
                     <div class="menu-item" onclick="showSection('billing'); closeMenu()">
                         <i class="fas fa-credit-card"></i>
                         <span>Billing</span>
@@ -708,29 +1126,9 @@
                         <span>Tasks</span>
                     </div>
                 </div>
-            </div>
 
-            <div class="menu-section">
-                <div class="menu-title">REPORTS</div>
-                <div class="menu-items">
-                    <div class="menu-item" onclick="showSection('reports'); closeMenu()">
-                        <i class="fas fa-file-alt"></i>
-                        <span>Reports</span>
-                    </div>
-                    <div class="menu-item" onclick="showSection('messages'); closeMenu()">
-                        <i class="fas fa-envelope"></i>
-                        <span>Messages</span>
-                    </div>
-                    <div class="menu-item" onclick="showSection('network'); closeMenu()">
-                        <i class="fas fa-network-wired"></i>
-                        <span>Network</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="menu-section">
-                <div class="menu-title">SYSTEM</div>
-                <div class="menu-items">
+                <div class="menu-group">
+                    <div class="menu-group-title">System</div>
                     <div class="menu-item" onclick="showSection('settings'); closeMenu()">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>
@@ -741,8 +1139,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="menu-footer">
+            <div class="sidebar-footer">
                 <div class="menu-item" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
@@ -750,82 +1147,89 @@
             </div>
         </div>
 
-        <!-- CONTENT AREA (SEMUA FITUR TAMPIL DI SINI) -->
-        <div class="content-area">
+        <!-- Overlay -->
+        <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+        <!-- Main Content -->
+        <div class="main-content">
             <!-- DASHBOARD SECTION -->
             <div class="section active" id="dashboardSection">
-                <h1 style="margin-bottom: 30px;"><i class="fas fa-chart-pie"></i> Dashboard</h1>
-                
-                <!-- STATS CARDS -->
+                <!-- Stats Cards - SEMUA NOL -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-users"></i></div>
-                        <div class="stat-value">127</div>
-                        <div class="stat-label">Total Pelanggan</div>
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Total customers</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-wifi"></i></div>
-                        <div class="stat-value">98</div>
-                        <div class="stat-label">Aktif</div>
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Active</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
-                        <div class="stat-value">Rp 45.8M</div>
-                        <div class="stat-label">Pendapatan</div>
+                        <div class="stat-value">$0</div>
+                        <div class="stat-label">Revenue</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="stat-value">98</div>
-                        <div class="stat-label">Lokasi</div>
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Locations</div>
                     </div>
                 </div>
 
-                <!-- FITUR DASHBOARD -->
+                <!-- QUICK ADD WIDGETS - FITUR ADD DI DASHBOARD -->
+                <div class="quick-add-grid">
+                    <div class="quick-add-card" onclick="openModal('addCustomerModal')">
+                        <div class="quick-add-icon"><i class="fas fa-user-plus"></i></div>
+                        <div class="quick-add-title">Add Customer</div>
+                        <div class="quick-add-desc">Register new customer to database</div>
+                    </div>
+                    <div class="quick-add-card" onclick="openModal('addPaymentModal')">
+                        <div class="quick-add-icon"><i class="fas fa-credit-card"></i></div>
+                        <div class="quick-add-title">Record Payment</div>
+                        <div class="quick-add-desc">Add new payment transaction</div>
+                    </div>
+                </div>
+
+                <!-- Charts and Activity - SEMUA KOSONG -->
                 <div class="feature-grid">
                     <div class="feature-card">
-                        <div class="feature-title"><i class="fas fa-chart-line" style="color: #667eea;"></i> Grafik Pendapatan</div>
-                        <div style="height: 200px; background: #252539; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                            📊 Grafik akan tampil di sini
+                        <div class="feature-header">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="feature-title">Revenue trend</span>
+                        </div>
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; color: var(--gray);">
+                            No data available
                         </div>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-title"><i class="fas fa-users" style="color: #667eea;"></i> Pelanggan Baru</div>
-                        <p style="font-size: 2em;">15</p>
-                        <p style="color: #888;">Minggu ini</p>
-                        <p style="color: #00b894;"><i class="fas fa-arrow-up"></i> +5 hari ini</p>
+                        <div class="feature-header">
+                            <i class="fas fa-users"></i>
+                            <span class="feature-title">New customers</span>
+                        </div>
+                        <div style="font-size: 3em; font-weight: 600; margin: 20px 0;">0</div>
+                        <div style="color: var(--gray);">this week</div>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-title"><i class="fas fa-clock" style="color: #667eea;"></i> Akan Expired</div>
-                        <p style="font-size: 2em;">8</p>
-                        <p style="color: #888;">Pelanggan</p>
-                        <span class="status-badge status-warning">3 hari lagi</span>
+                        <div class="feature-header">
+                            <i class="fas fa-clock"></i>
+                            <span class="feature-title">Expiring soon</span>
+                        </div>
+                        <div style="font-size: 3em; font-weight: 600; margin: 20px 0;">0</div>
+                        <div style="color: var(--gray);">customers</div>
                     </div>
                 </div>
 
-                <!-- AKTIVITAS TERBARU -->
+                <!-- Recent Activity - KOSONG -->
                 <div class="table-container">
-                    <h3 style="margin-bottom: 20px;">Aktivitas Terbaru</h3>
+                    <h3 style="margin-bottom: 20px;">Recent activity</h3>
                     <table>
                         <tr>
-                            <td>09:30</td>
-                            <td>Budi Santoso</td>
-                            <td>Pembayaran</td>
-                            <td>Rp 250,000</td>
-                            <td><span class="status-badge status-active">Sukses</span></td>
-                        </tr>
-                        <tr>
-                            <td>09:15</td>
-                            <td>Dewi Lestari</td>
-                            <td>Instalasi</td>
-                            <td>Jl. Sudirman</td>
-                            <td><span class="status-badge status-warning">Proses</span></td>
-                        </tr>
-                        <tr>
-                            <td>08:45</td>
-                            <td>Ahmad Fauzi</td>
-                            <td>Komplain</td>
-                            <td>Jaringan lambat</td>
-                            <td><span class="status-badge status-danger">Pending</span></td>
+                            <td colspan="5" style="text-align: center; color: var(--gray); padding: 40px;">
+                                <i class="fas fa-inbox" style="font-size: 2em; margin-bottom: 10px;"></i><br>
+                                No recent activity
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -834,73 +1238,29 @@
             <!-- CUSTOMERS SECTION -->
             <div class="section" id="customersSection">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                    <h1><i class="fas fa-users"></i> Manajemen Pelanggan</h1>
-                    <button class="btn" onclick="openModal('addModal')">
-                        <i class="fas fa-plus"></i> Tambah
+                    <h1 style="font-family: 'Space Grotesk', sans-serif;">Customers</h1>
+                    <button class="btn" onclick="openModal('addCustomerModal')">
+                        <i class="fas fa-plus"></i> Add customer
                     </button>
                 </div>
 
-                <!-- FITUR CUSTOMER -->
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <div class="feature-title"><i class="fas fa-search"></i> Cari Pelanggan</div>
-                        <input type="text" placeholder="Nama / No HP..." style="width: 100%; padding: 12px; background: #252539; border: 1px solid #2a2a3e; border-radius: 10px; color: white;">
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-title"><i class="fas fa-filter"></i> Filter</div>
-                        <div style="display: flex; gap: 10px;">
-                            <button class="btn-outline btn-sm">Semua</button>
-                            <button class="btn-outline btn-sm">Aktif</button>
-                            <button class="btn-outline btn-sm">Expired</button>
-                        </div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-title"><i class="fas fa-download"></i> Export</div>
-                        <button class="btn-sm">Download CSV</button>
-                    </div>
-                </div>
-
-                <!-- TABEL PELANGGAN -->
+                <!-- Tabel Kosong -->
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>Nama</th>
-                                <th>No HP</th>
-                                <th>Paket</th>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Package</th>
                                 <th>Status</th>
-                                <th>Aksi</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Budi Santoso</td>
-                                <td>08123456789</td>
-                                <td>Premium 50Mbps</td>
-                                <td><span class="status-badge status-active">Aktif</span></td>
-                                <td>
-                                    <button class="btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Dewi Lestari</td>
-                                <td>08129876543</td>
-                                <td>Basic 10Mbps</td>
-                                <td><span class="status-badge status-active">Aktif</span></td>
-                                <td>
-                                    <button class="btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Ahmad Fauzi</td>
-                                <td>08121234567</td>
-                                <td>Standard 20Mbps</td>
-                                <td><span class="status-badge status-warning">Pending</span></td>
-                                <td>
-                                    <button class="btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn-sm"><i class="fas fa-trash"></i></button>
+                                <td colspan="5" style="text-align: center; color: var(--gray); padding: 60px;">
+                                    <i class="fas fa-user-slash" style="font-size: 2em; margin-bottom: 10px;"></i><br>
+                                    No customers yet
                                 </td>
                             </tr>
                         </tbody>
@@ -910,179 +1270,165 @@
 
             <!-- MAPS SECTION -->
             <div class="section" id="mapsSection">
-                <h1 style="margin-bottom: 30px;"><i class="fas fa-map-marked-alt"></i> Maps & Lokasi Akurat</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif; margin-bottom: 30px;">Maps & Location</h1>
                 
-                <!-- MAP TOOLS -->
-                <div class="map-tools">
+                <div class="map-controls">
                     <button class="map-btn"><i class="fas fa-road"></i> Street</button>
                     <button class="map-btn"><i class="fas fa-satellite"></i> Satellite</button>
                     <button class="map-btn"><i class="fas fa-mountain"></i> Terrain</button>
-                    <button class="map-btn" onclick="getUserLocation()"><i class="fas fa-location-arrow"></i> Lokasi Saya</button>
-                    <button class="map-btn"><i class="fas fa-fire"></i> Heatmap</button>
+                    <button class="map-btn" onclick="getUserLocation()"><i class="fas fa-location-arrow"></i> My location</button>
                 </div>
 
-                <!-- ACCURACY PANEL -->
-                <div class="accuracy-panel">
-                    <h4>📍 GPS Real-time</h4>
-                    <div class="accuracy-meter">
-                        <div class="accuracy-fill" style="width: 98%;"></div>
-                    </div>
-                    <div class="coord-grid">
-                        <div class="coord-box">
-                            <label>Latitude</label>
-                            <div id="currentLat">-6.208800</div>
-                        </div>
-                        <div class="coord-box">
-                            <label>Longitude</label>
-                            <div id="currentLng">106.845600</div>
-                        </div>
-                        <div class="coord-box">
-                            <label>Akurasi</label>
-                            <div id="currentAccuracy">±3.2m</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- MAP -->
                 <div class="map-container">
                     <div id="map"></div>
+                    
+                    <!-- GPS Panel with Zero Values -->
+                    <div class="gps-panel">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span><i class="fas fa-satellite-dish" style="color: var(--primary);"></i> GPS Signal</span>
+                            <span style="color: var(--gray);">Waiting...</span>
+                        </div>
+                        <div class="accuracy-meter">
+                            <div class="accuracy-fill" id="accuracyFill" style="width: 0%;"></div>
+                        </div>
+                        <div class="coord-grid">
+                            <div class="coord-item">
+                                <div class="coord-label">Latitude</div>
+                                <div class="coord-value" id="currentLat">0.000000</div>
+                            </div>
+                            <div class="coord-item">
+                                <div class="coord-label">Longitude</div>
+                                <div class="coord-value" id="currentLng">0.000000</div>
+                            </div>
+                            <div class="coord-item">
+                                <div class="coord-label">Accuracy</div>
+                                <div class="coord-value" id="currentAccuracy">±0.0m</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- NEARBY CUSTOMERS -->
-                <div class="feature-grid" style="margin-top: 20px;">
+                <!-- Nearby Customers - Kosong -->
+                <div class="feature-grid" style="margin-top: 24px;">
                     <div class="feature-card">
-                        <div class="feature-title"><i class="fas fa-users"></i> Pelanggan Terdekat</div>
-                        <div style="margin: 10px 0;">📍 Budi Santoso - 120m</div>
-                        <div style="margin: 10px 0;">📍 Dewi Lestari - 250m</div>
-                        <div style="margin: 10px 0;">📍 Ahmad Fauzi - 380m</div>
+                        <div class="feature-header">
+                            <i class="fas fa-users"></i>
+                            <span class="feature-title">Nearby customers</span>
+                        </div>
+                        <div style="text-align: center; color: var(--gray); padding: 20px;">
+                            No customers nearby
+                        </div>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-title"><i class="fas fa-chart-line"></i> Statistik Lokasi</div>
-                        <p>📍 Total titik: 98</p>
-                        <p>📊 Cakupan: 12.5 km²</p>
-                        <p>🎯 Akurasi rata-rata: 3.2m</p>
+                        <div class="feature-header">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="feature-title">Coverage stats</span>
+                        </div>
+                        <div style="margin: 12px 0;">📍 0 tracked points</div>
+                        <div style="margin: 12px 0;">📊 0 km² coverage</div>
                     </div>
                 </div>
             </div>
 
-            <!-- SECTION LAINNYA (SINGKAT UNTUK HEMAT TEMPAT) -->
+            <!-- Other sections with zero values -->
             <div class="section" id="analyticsSection">
-                <h1>Analytics</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Analytics</h1>
                 <div class="feature-grid">
-                    <div class="feature-card">📈 Grafik Pertumbuhan</div>
-                    <div class="feature-card">📊 Distribusi Paket</div>
-                    <div class="feature-card">💰 Revenue per Bulan</div>
+                    <div class="feature-card">📈 No data available</div>
+                    <div class="feature-card">📊 No data available</div>
                 </div>
             </div>
 
             <div class="section" id="billingSection">
-                <h1>Billing</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Billing</h1>
                 <div class="table-container">
                     <table>
-                        <tr><th>Invoice</th><th>Customer</th><th>Jumlah</th><th>Status</th></tr>
-                        <tr><td>INV-001</td><td>Budi</td><td>Rp250,000</td><td><span class="status-badge status-active">Lunas</span></td></tr>
-                        <tr><td>INV-002</td><td>Dewi</td><td>Rp150,000</td><td><span class="status-badge status-warning">Pending</span></td></tr>
+                        <tr><td colspan="4" style="text-align: center; padding: 40px;">No transactions</td></tr>
                     </table>
                 </div>
             </div>
 
             <div class="section" id="inventorySection">
-                <h1>Inventory</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Inventory</h1>
                 <div class="stats-grid">
-                    <div class="stat-card">Router: 234</div>
-                    <div class="stat-card">Kabel: 567</div>
-                    <div class="stat-card">Access Point: 89</div>
+                    <div class="stat-card">Routers: 0</div>
+                    <div class="stat-card">Cables: 0</div>
                 </div>
             </div>
 
             <div class="section" id="calendarSection">
-                <h1>Calendar</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Calendar</h1>
                 <div class="feature-card">
-                    <div>📅 15 Jan - Instalasi Budi</div>
-                    <div>📅 16 Jan - Pembayaran Dewi</div>
-                    <div>📅 17 Jan - Maintenance</div>
+                    <div style="text-align: center; padding: 20px;">No scheduled events</div>
                 </div>
             </div>
 
             <div class="section" id="tasksSection">
-                <h1>Tasks</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Tasks</h1>
                 <div class="feature-card">
-                    <div>✅ Instalasi Jl. Sudirman</div>
-                    <div>⏳ Follow up pembayaran</div>
-                    <div>✅ Maintenance jaringan</div>
-                </div>
-            </div>
-
-            <div class="section" id="reportsSection">
-                <h1>Reports</h1>
-                <div class="feature-grid">
-                    <div class="feature-card">Laporan Bulanan</div>
-                    <div class="feature-card">Laporan Tahunan</div>
-                </div>
-            </div>
-
-            <div class="section" id="messagesSection">
-                <h1>Messages</h1>
-                <div class="feature-card">
-                    <div>📨 Pesan dari Budi</div>
-                    <div>📨 Notifikasi sistem</div>
-                </div>
-            </div>
-
-            <div class="section" id="networkSection">
-                <h1>Network</h1>
-                <div class="stats-grid">
-                    <div class="stat-card">Uptime: 99.9%</div>
-                    <div class="stat-card">Bandwidth: 450 Mbps</div>
+                    <div style="text-align: center; padding: 20px;">No tasks</div>
                 </div>
             </div>
 
             <div class="section" id="settingsSection">
-                <h1>Settings</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Settings</h1>
                 <div class="feature-card">
                     <div class="form-group">
-                        <label>Nama Perusahaan</label>
-                        <input type="text" value="WiFiPro">
+                        <label>Company name</label>
+                        <input type="text" value="flō">
                     </div>
                 </div>
             </div>
 
             <div class="section" id="supportSection">
-                <h1>Support</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Support</h1>
                 <div class="feature-card">
-                    <p>📞 021-1234-5678</p>
-                    <p>📧 support@wifipro.com</p>
+                    <p>📞 support@flow.com</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL TAMBAH PELANGGAN -->
-    <div class="modal" id="addModal">
+    <!-- Add Customer Modal -->
+    <div class="modal" id="addCustomerModal">
         <div class="modal-content">
-            <h2 style="margin-bottom: 30px;">Tambah Pelanggan</h2>
-            <form>
+            <h2>Add customer</h2>
+            <form onsubmit="event.preventDefault(); addCustomer();">
                 <div class="form-group">
-                    <label>Nama Lengkap</label>
-                    <input type="text" required>
+                    <label>Full name</label>
+                    <input type="text" id="customerName" required>
                 </div>
                 <div class="form-group">
-                    <label>No HP</label>
-                    <input type="tel" required>
+                    <label>Phone</label>
+                    <input type="tel" id="customerPhone" required>
                 </div>
                 <div class="form-group">
-                    <label>Paket</label>
-                    <select>
+                    <label>Package</label>
+                    <select id="customerPackage">
                         <option>Basic 10Mbps</option>
                         <option>Standard 20Mbps</option>
                         <option>Premium 50Mbps</option>
                     </select>
                 </div>
+                <button type="submit" class="btn" style="width: 100%;">Save</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Payment Modal -->
+    <div class="modal" id="addPaymentModal">
+        <div class="modal-content">
+            <h2>Record payment</h2>
+            <form onsubmit="event.preventDefault(); addPayment();">
                 <div class="form-group">
-                    <label>Alamat</label>
-                    <textarea rows="3"></textarea>
+                    <label>Customer</label>
+                    <input type="text" placeholder="Search customer..." disabled value="No customers yet">
                 </div>
-                <button type="submit" class="btn" style="width: 100%;">Simpan</button>
+                <div class="form-group">
+                    <label>Amount</label>
+                    <input type="number" placeholder="0">
+                </div>
+                <button type="submit" class="btn" style="width: 100%;" disabled>Save</button>
             </form>
         </div>
     </div>
@@ -1091,7 +1437,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <script>
-        // LOGIN
+        // Login
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             document.getElementById('loginPage').style.display = 'none';
@@ -1100,7 +1446,7 @@
             startGPS();
         });
 
-        // HAMBURGER MENU FUNCTIONS
+        // Menu functions
         function toggleMenu() {
             document.getElementById('sidebarMenu').classList.toggle('open');
             document.getElementById('menuOverlay').classList.toggle('active');
@@ -1113,64 +1459,66 @@
             document.getElementById('hamburgerBtn').classList.remove('active');
         }
 
-        // SHOW SECTION
+        // Profile dropdown
+        function toggleProfileDropdown() {
+            document.getElementById('profileDropdown').classList.toggle('active');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('profileDropdown');
+            const profile = document.querySelector('.user-profile');
+            
+            if (!profile.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // Show section
         function showSection(section) {
-            // Hide all sections
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-            // Remove active from all menu items
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-            // Show selected section
             document.getElementById(section + 'Section').classList.add('active');
-            // Add active to clicked menu
             event.target.closest('.menu-item').classList.add('active');
             
-            // Refresh map if maps section
             if (section === 'maps' && map) {
                 setTimeout(() => map.invalidateSize(), 100);
             }
         }
 
-        // MAP
+        // Map
         let map;
         function initMap() {
-            map = L.map('map').setView([-6.2088, 106.8456], 15);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '© OpenStreetMap'
+            map = L.map('map').setView([0, 0], 2);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '© CartoDB'
             }).addTo(map);
-            
-            // Add marker
-            L.marker([-6.2088, 106.8456]).addTo(map)
-                .bindPopup('Jakarta').openPopup();
         }
 
-        // GPS TRACKING
-        let gpsWatchId;
+        // GPS
         function startGPS() {
             if (navigator.geolocation) {
-                gpsWatchId = navigator.geolocation.watchPosition(
-                    position => {
-                        document.getElementById('currentLat').textContent = position.coords.latitude.toFixed(6);
-                        document.getElementById('currentLng').textContent = position.coords.longitude.toFixed(6);
-                        document.getElementById('currentAccuracy').textContent = '±' + position.coords.accuracy.toFixed(1) + 'm';
-                    },
-                    error => console.log('GPS Error'),
-                    { enableHighAccuracy: true }
-                );
+                navigator.geolocation.watchPosition(pos => {
+                    document.getElementById('currentLat').textContent = pos.coords.latitude.toFixed(6);
+                    document.getElementById('currentLng').textContent = pos.coords.longitude.toFixed(6);
+                    document.getElementById('currentAccuracy').textContent = '±' + pos.coords.accuracy.toFixed(1) + 'm';
+                    
+                    // Update accuracy meter
+                    const accuracy = Math.min(100, 100 - (pos.coords.accuracy * 2));
+                    document.getElementById('accuracyFill').style.width = accuracy + '%';
+                }, null, { enableHighAccuracy: true });
             }
         }
 
-        // GET USER LOCATION
         function getUserLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(pos => {
                     map.setView([pos.coords.latitude, pos.coords.longitude], 18);
-                    L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(map)
-                        .bindPopup('Lokasi Anda').openPopup();
                 });
             }
         }
 
-        // MODAL
+        // Modal functions
         function openModal(id) {
             document.getElementById(id).classList.add('active');
         }
@@ -1179,14 +1527,25 @@
             document.getElementById(id).classList.remove('active');
         }
 
-        // LOGOUT
-        function logout() {
-            if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
-            document.getElementById('mainApp').style.display = 'none';
-            document.getElementById('loginPage').style.display = 'flex';
+        // Add customer function (just closes modal since we want zero values)
+        function addCustomer() {
+            alert('Demo: Customer would be added here. Keeping zero values for demo.');
+            closeModal('addCustomerModal');
         }
 
-        // CLOSE MODAL ON CLICK OUTSIDE
+        function addPayment() {
+            alert('Demo: Payment would be recorded here. Keeping zero values for demo.');
+            closeModal('addPaymentModal');
+        }
+
+        // Logout
+        function logout() {
+            document.getElementById('mainApp').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+            document.getElementById('profileDropdown').classList.remove('active');
+        }
+
+        // Click outside modal
         window.onclick = function(e) {
             if (e.target.classList.contains('modal')) {
                 e.target.classList.remove('active');
