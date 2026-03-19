@@ -1715,7 +1715,7 @@
                     <label>Paket</label>
                     <select id="customerPackage">
                         <option value="Basic 10Mbps" data-price="15">Basic 10Mbps - 200K</option>
-                        <option value="Standard 15Mbps" data-price="25">Standard 20Mbps - 250K</option>
+                        <option value="Standard 20Mbps" data-price="25">Standard 20Mbps - 250K</option>
                         <option value="Premium 25Mbps" data-price="40">Premium 25Mbps - 300K</option>
                         <option value="Ultra 30Mbps" data-price="75">Ultra 30Mbps - 350K</option>
                         <option value="VVIP 40Mbps" data-price="85">VVIP 40Mbps - 400K</option>
@@ -1759,7 +1759,7 @@
                     <label>Paket</label>
                     <select id="editCustomerPackage">
                         <option value="Basic 10Mbps" data-price="15">Basic 10Mbps - 200K</option>
-                        <option value="Standard 15Mbps" data-price="25">Standard 20Mbps - 250K</option>
+                        <option value="Standard 20Mbps" data-price="25">Standard 20Mbps - 250K</option>
                         <option value="Premium 25Mbps" data-price="40">Premium 25Mbps - 300K</option>
                         <option value="Ultra 30Mbps" data-price="75">Ultra 30Mbps - 350K</option>
                         <option value="VVIP 40Mbps" data-pselect="85">VVIP 40Mbps - 400K</option>
@@ -2220,7 +2220,7 @@
                         <td>${c.name}</td>
                         <td>${c.phone}</td>
                         <td>${c.package}</td>
-                        <td>Rp ${(c.price || 150000).toLocaleString('id-ID')}</td>
+                        <td>Rp ${(c.price || 0).toLocaleString('id-ID')}</td>
                         <td>${displayDate}</td>
                         <td><span class="badge badge-success">Aktif</span></td>
                         <td>
