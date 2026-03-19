@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> MyPROJECK</title>
+    <title>flō • Rupiah • Live Charts • Fixed Calendar</title>
     
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -16,6 +16,12 @@
     
     <!-- FullCalendar CSS -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- Flatpickr CSS for Date Picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     
     <style>
         * {
@@ -179,6 +185,31 @@
             box-shadow: 0 10px 30px -5px var(--primary);
         }
 
+        .login-error {
+            color: var(--danger);
+            font-size: 0.85em;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+
+        .register-link span {
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
         /* Main App */
         .main-app {
             display: none;
@@ -300,7 +331,7 @@
             border: 2px solid var(--dark);
         }
 
-        /* Clickable Profile with Working Dropdown */
+        /* Clickable Profile */
         .profile-container {
             position: relative;
         }
@@ -605,6 +636,22 @@
             font-size: 0.9em;
         }
 
+        /* Chart Containers */
+        .chart-container {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 32px;
+            height: 400px;
+        }
+
+        .chart-wrapper {
+            height: 300px;
+            position: relative;
+        }
+
         /* Quick Add Widget */
         .quick-add-grid {
             display: grid;
@@ -880,52 +927,82 @@
             color: var(--primary);
         }
 
-        /* Calendar */
+        /* Calendar - FIXED */
         .calendar-container {
             background: rgba(15, 23, 42, 0.4);
             backdrop-filter: blur(10px);
             border: 1px solid var(--glass-border);
             border-radius: 28px;
             padding: 24px;
+            min-height: 700px;
         }
 
         #calendar {
             background: transparent;
             color: white;
             min-height: 600px;
+            width: 100%;
         }
 
         .fc {
             background: transparent;
             color: white;
+            height: 100%;
         }
 
         .fc-toolbar-title {
             color: white !important;
+            font-size: 1.5em !important;
         }
 
-        .fc-button {
+        .fc-button-primary {
             background: rgba(99, 102, 241, 0.2) !important;
             border: 1px solid var(--glass-border) !important;
             color: white !important;
+            box-shadow: none !important;
         }
 
-        .fc-button:hover {
+        .fc-button-primary:hover {
+            background: var(--primary) !important;
+            border-color: var(--primary) !important;
+        }
+
+        .fc-button-primary:not(:disabled):active,
+        .fc-button-primary:not(:disabled).fc-button-active {
             background: var(--primary) !important;
         }
 
-        .fc-day {
+        .fc-daygrid-day {
             background: rgba(255, 255, 255, 0.02) !important;
+            border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+
+        .fc-daygrid-day:hover {
+            background: rgba(99, 102, 241, 0.1) !important;
+            cursor: pointer;
         }
 
         .fc-day-today {
-            background: rgba(99, 102, 241, 0.1) !important;
+            background: rgba(99, 102, 241, 0.15) !important;
         }
 
         .fc-event {
             background: var(--primary) !important;
             border: none !important;
             cursor: pointer;
+            padding: 2px 4px !important;
+            margin: 1px 0 !important;
+            border-radius: 4px !important;
+        }
+
+        .fc-event:hover {
+            background: var(--primary-dark) !important;
+        }
+
+        .fc-daygrid-day-number,
+        .fc-col-header-cell-cushion {
+            color: white !important;
+            text-decoration: none !important;
         }
 
         /* Modal */
@@ -1062,6 +1139,31 @@
             font-size: 1.2em;
         }
 
+        /* Flatpickr customization */
+        .flatpickr-calendar {
+            background: var(--dark) !important;
+            border: 1px solid var(--glass-border) !important;
+            box-shadow: var(--shadow-xl) !important;
+        }
+
+        .flatpickr-day {
+            color: white !important;
+        }
+
+        .flatpickr-day.selected {
+            background: var(--primary) !important;
+            border-color: var(--primary) !important;
+        }
+
+        .flatpickr-months,
+        .flatpickr-weekdays {
+            background: rgba(255,255,255,0.05) !important;
+        }
+
+        .flatpickr-current-month input {
+            color: white !important;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .main-content {
@@ -1109,12 +1211,12 @@
     <div class="bg-gradient"></div>
     <div class="noise"></div>
 
-    <!-- LOGIN PAGE -->
+    <!-- LOGIN PAGE - UPDATED CREDENTIALS -->
     <div class="login-page" id="loginPage">
         <div class="login-card">
             <div class="login-header">
                 <h1>flō</h1>
-                <p>Create ByCan</p>
+                <p>Login dengan Username: admin | Password: PUTRI R</p>
             </div>
             <form id="loginForm">
                 <div class="input-group">
@@ -1125,7 +1227,40 @@
                     <i class="fas fa-lock"></i>
                     <input type="password" placeholder="Password" id="password" value="PUTRI R" required>
                 </div>
-                <button type="submit" class="login-btn">Sign in</button>
+                <button type="submit" class="login-btn">Masuk</button>
+                <div class="login-error" id="loginError">Username atau password salah</div>
+            </form>
+            <div class="register-link">
+                <span onclick="showRegister()">Buat akun baru</span> | Default: admin / PUTRI R
+            </div>
+        </div>
+    </div>
+
+    <!-- REGISTER MODAL -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <h2>Buat Akun Baru</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="regUsername" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="regPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>Konfirmasi Password</label>
+                    <input type="password" id="regConfirmPassword" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="regEmail" required>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('registerModal')">Batal</button>
+                    <button type="submit" class="btn" style="flex:2;">Daftar</button>
+                </div>
             </form>
         </div>
     </div>
@@ -1135,7 +1270,7 @@
         <!-- Premium Header -->
         <header class="app-header">
             <div class="header-left">
-                <div class="hamburger" id="PUTBtn" onclick="toggleMenu()">
+                <div class="hamburger" id="hamburgerBtn" onclick="toggleMenu()">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -1143,52 +1278,52 @@
                 <div class="logo">flō</div>
             </div>
             <div class="header-right">
-                <div class="icon-btn" onclick="showToast('Search feature')">
+                <div class="icon-btn" onclick="showToast('Fitur pencarian')">
                     <i class="fas fa-search"></i>
                 </div>
-                <div class="icon-btn" onclick="showToast('No new notifications')">
+                <div class="icon-btn" onclick="showToast('Tidak ada notifikasi')">
                     <i class="fas fa-bell"></i>
                     <span class="badge" id="notificationBadge">0</span>
                 </div>
-                <div class="icon-btn" onclick="showToast('No new messages')">
+                <div class="icon-btn" onclick="showToast('Tidak ada pesan')">
                     <i class="fas fa-envelope"></i>
                     <span class="badge" id="messageBadge">0</span>
                 </div>
                 
-                <!-- Clickable Profile with Working Dropdown -->
+                <!-- Clickable Profile -->
                 <div class="profile-container">
                     <div class="user-profile" onclick="toggleProfileDropdown(event)">
-                        <div class="avatar">A</div>
-                        <span>Admin</span>
+                        <div class="avatar" id="profileAvatar">A</div>
+                        <span id="profileUsername">Admin</span>
                         <i class="fas fa-chevron-down" style="font-size: 0.8em; color: var(--gray);"></i>
                     </div>
                     
-                    <!-- Dropdown Menu - ALL ITEMS -->
+                    <!-- Dropdown Menu -->
                     <div class="profile-dropdown" id="profileDropdown">
                         <div class="dropdown-header">
-                            <div class="name">Admin User</div>
-                            <div class="email">admin@w.com</div>
+                            <div class="name" id="dropdownName">Admin User</div>
+                            <div class="email" id="dropdownEmail">admin@flow.com</div>
                         </div>
                         <div class="dropdown-item" onclick="showSection('profile'); toggleProfileDropdown(); closeMenu()">
                             <i class="fas fa-user"></i>
-                            <span>My Profile</span>
+                            <span>Profil Saya</span>
                         </div>
                         <div class="dropdown-item" onclick="showSection('settings'); toggleProfileDropdown(); closeMenu()">
                             <i class="fas fa-cog"></i>
-                            <span>Settings</span>
+                            <span>Pengaturan</span>
                         </div>
                         <div class="dropdown-item" onclick="showSection('billing'); toggleProfileDropdown(); closeMenu()">
                             <i class="fas fa-credit-card"></i>
-                            <span>Billing</span>
+                            <span>Pembayaran</span>
                         </div>
                         <div class="dropdown-item" onclick="showSection('support'); toggleProfileDropdown(); closeMenu()">
                             <i class="fas fa-headset"></i>
-                            <span>Support</span>
+                            <span>Bantuan</span>
                         </div>
                         <div class="dropdown-divider"></div>
                         <div class="dropdown-item logout" onclick="logout()">
                             <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
+                            <span>Keluar</span>
                         </div>
                     </div>
                 </div>
@@ -1199,71 +1334,71 @@
         <div class="sidebar" id="sidebarMenu">
             <div class="sidebar-header">
                 <h2>flō</h2>
-                <p>Complete Working System</p>
+                <p>Rupiah • Live Charts • Kalender</p>
             </div>
             <div class="sidebar-content">
                 <div class="menu-group">
-                    <div class="menu-group-title">Main</div>
+                    <div class="menu-group-title">Utama</div>
                     <div class="menu-item active" onclick="showSection('dashboard'); closeMenu()">
                         <i class="fas fa-chart-pie"></i>
                         <span>Dashboard</span>
                     </div>
                     <div class="menu-item" onclick="showSection('customers'); closeMenu()">
                         <i class="fas fa-users"></i>
-                        <span>Customers</span>
+                        <span>Pelanggan</span>
                         <span class="menu-badge" id="customerCount">0</span>
                     </div>
                     <div class="menu-item" onclick="showSection('maps'); closeMenu()">
                         <i class="fas fa-map-marked-alt"></i>
-                        <span>Maps</span>
+                        <span>Peta</span>
                         <span class="menu-badge">GPS</span>
                     </div>
                     <div class="menu-item" onclick="showSection('analytics'); closeMenu()">
                         <i class="fas fa-chart-line"></i>
-                        <span>Analytics</span>
+                        <span>Analitik</span>
                     </div>
                 </div>
 
                 <div class="menu-group">
-                    <div class="menu-group-title">Management</div>
+                    <div class="menu-group-title">Manajemen</div>
                     <div class="menu-item" onclick="showSection('billing'); closeMenu()">
                         <i class="fas fa-credit-card"></i>
-                        <span>Billing</span>
+                        <span>Pembayaran</span>
                     </div>
                     <div class="menu-item" onclick="showSection('inventory'); closeMenu()">
                         <i class="fas fa-box"></i>
-                        <span>Inventory</span>
+                        <span>Inventaris</span>
                     </div>
                     <div class="menu-item" onclick="showSection('calendar'); closeMenu()">
                         <i class="fas fa-calendar"></i>
-                        <span>Calendar</span>
+                        <span>Kalender</span>
                     </div>
                     <div class="menu-item" onclick="showSection('tasks'); closeMenu()">
                         <i class="fas fa-tasks"></i>
-                        <span>Tasks</span>
+                        <span>Tugas</span>
                     </div>
                 </div>
 
                 <div class="menu-group">
-                    <div class="menu-group-title">System</div>
+                    <div class="menu-group-title">Sistem</div>
                     <div class="menu-item" onclick="showSection('profile'); closeMenu()">
                         <i class="fas fa-user"></i>
-                        <span>Profile</span>
+                        <span>Profil</span>
                     </div>
                     <div class="menu-item" onclick="showSection('settings'); closeMenu()">
                         <i class="fas fa-cog"></i>
-                        <span>Settings</span>
+                        <span>Pengaturan</span>
                     </div>
                     <div class="menu-item" onclick="showSection('support'); closeMenu()">
                         <i class="fas fa-headset"></i>
-                        <span>Support</span>
+                        <span>Bantuan</span>
                     </div>
                 </div>
             </div>
             <div class="sidebar-footer">
                 <div class="menu-item" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
+                    <span>Keluar</span>
                 </div>
             </div>
         </div>
@@ -1275,27 +1410,42 @@
         <div class="main-content">
             <!-- DASHBOARD SECTION -->
             <div class="section active" id="dashboardSection">
-                <!-- Stats Cards - Dynamic -->
+                <!-- Stats Cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-users"></i></div>
                         <div class="stat-value" id="totalCustomers">0</div>
-                        <div class="stat-label">Total customers</div>
+                        <div class="stat-label">Total Pelanggan</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-wifi"></i></div>
                         <div class="stat-value" id="activeCustomers">0</div>
-                        <div class="stat-label">Active</div>
+                        <div class="stat-label">Aktif</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
-                        <div class="stat-value" id="totalRevenue">$0</div>
-                        <div class="stat-label">Monthly Revenue</div>
+                        <div class="stat-value" id="totalRevenue">Rp 0</div>
+                        <div class="stat-label">Pendapatan Bulanan</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
                         <div class="stat-value" id="totalLocations">0</div>
-                        <div class="stat-label">Locations</div>
+                        <div class="stat-label">Lokasi</div>
+                    </div>
+                </div>
+
+                <!-- LIVE CHARTS -->
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 20px;">Pendapatan Bulanan (Rp)</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 20px;">Distribusi Pelanggan per Paket</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="packageChart"></canvas>
                     </div>
                 </div>
 
@@ -1303,34 +1453,34 @@
                 <div class="quick-add-grid">
                     <div class="quick-add-card" onclick="openModal('addCustomerModal')">
                         <div class="quick-add-icon"><i class="fas fa-user-plus"></i></div>
-                        <div class="quick-add-title">Add Customer</div>
-                        <div class="quick-add-desc">Register new customer to database</div>
+                        <div class="quick-add-title">Tambah Pelanggan</div>
+                        <div class="quick-add-desc">Registrasi pelanggan baru</div>
                     </div>
                     <div class="quick-add-card" onclick="openModal('addPaymentModal')">
                         <div class="quick-add-icon"><i class="fas fa-credit-card"></i></div>
-                        <div class="quick-add-title">Record Payment</div>
-                        <div class="quick-add-desc">Add new payment transaction</div>
+                        <div class="quick-add-title">Catat Pembayaran</div>
+                        <div class="quick-add-desc">Tambah transaksi pembayaran</div>
                     </div>
                 </div>
 
                 <!-- Recent Customers -->
                 <div class="table-container">
-                    <h3 style="margin-bottom: 20px;">Recent Customers</h3>
+                    <h3 style="margin-bottom: 20px;">Pelanggan Terbaru</h3>
                     <table id="recentCustomersTable">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Phone</th>
-                                <th>Package</th>
+                                <th>Nama</th>
+                                <th>Telepon</th>
+                                <th>Paket</th>
                                 <th>Status</th>
-                                <th>Revenue</th>
+                                <th>Pendapatan</th>
                             </tr>
                         </thead>
                         <tbody id="recentCustomersBody">
                             <tr>
                                 <td colspan="5" style="text-align: center; color: var(--gray); padding: 40px;">
                                     <i class="fas fa-user-plus" style="font-size: 2em; margin-bottom: 10px;"></i><br>
-                                    Click "Add Customer" to get started
+                                    Klik "Tambah Pelanggan" untuk memulai
                                 </td>
                             </tr>
                         </tbody>
@@ -1338,33 +1488,34 @@
                 </div>
             </div>
 
-            <!-- CUSTOMERS SECTION - WITH EDIT & DELETE -->
+            <!-- CUSTOMERS SECTION -->
             <div class="section" id="customersSection">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-                    <h1 style="font-family: 'Space Grotesk', sans-serif;">Customers</h1>
+                    <h1 style="font-family: 'Space Grotesk', sans-serif;">Manajemen Pelanggan</h1>
                     <button class="btn" onclick="openModal('addCustomerModal')">
-                        <i class="fas fa-plus"></i> Add customer
+                        <i class="fas fa-plus"></i> Tambah Pelanggan
                     </button>
                 </div>
 
-                <!-- Customer Table with Edit/Delete -->
+                <!-- Customer Table -->
                 <div class="table-container">
                     <table id="customersTable">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Phone</th>
-                                <th>Package</th>
-                                <th>Monthly</th>
+                                <th>Nama</th>
+                                <th>Telepon</th>
+                                <th>Paket</th>
+                                <th>Bulanan</th>
+                                <th>Tanggal Daftar</th>
                                 <th>Status</th>
-                                <th>Actions</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="customersTableBody">
                             <tr>
-                                <td colspan="6" style="text-align: center; color: var(--gray); padding: 60px;">
+                                <td colspan="7" style="text-align: center; color: var(--gray); padding: 60px;">
                                     <i class="fas fa-user-slash" style="font-size: 2em; margin-bottom: 10px;"></i><br>
-                                    No customers yet. Click "Add customer" to create one.
+                                    Belum ada pelanggan. Klik "Tambah Pelanggan" untuk membuat.
                                 </td>
                             </tr>
                         </tbody>
@@ -1374,14 +1525,14 @@
 
             <!-- MAPS SECTION -->
             <div class="section" id="mapsSection">
-                <h1 style="font-family: 'Space Grotesk', sans-serif; margin-bottom: 30px;">Maps & Location</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif; margin-bottom: 30px;">Peta & Lokasi</h1>
                 
                 <div class="map-controls">
-                    <button class="map-btn" onclick="setMapLayer('street')"><i class="fas fa-road"></i> Street</button>
-                    <button class="map-btn" onclick="setMapLayer('satellite')"><i class="fas fa-satellite"></i> Satellite</button>
-                    <button class="map-btn" onclick="setMapLayer('terrain')"><i class="fas fa-mountain"></i> Terrain</button>
-                    <button class="map-btn" onclick="getUserLocation()"><i class="fas fa-location-arrow"></i> My location</button>
-                    <button class="map-btn" onclick="showCustomerLocations()"><i class="fas fa-users"></i> Show customers</button>
+                    <button class="map-btn" onclick="setMapLayer('street')"><i class="fas fa-road"></i> Jalan</button>
+                    <button class="map-btn" onclick="setMapLayer('satellite')"><i class="fas fa-satellite"></i> Satelit</button>
+                    <button class="map-btn" onclick="setMapLayer('terrain')"><i class="fas fa-mountain"></i> Medan</button>
+                    <button class="map-btn" onclick="getUserLocation()"><i class="fas fa-location-arrow"></i> Lokasi Saya</button>
+                    <button class="map-btn" onclick="showCustomerLocations()"><i class="fas fa-users"></i> Tampilkan Pelanggan</button>
                 </div>
 
                 <div class="map-container">
@@ -1390,23 +1541,23 @@
                     <!-- GPS Panel -->
                     <div class="gps-panel">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span><i class="fas fa-satellite-dish" style="color: var(--primary);"></i> GPS Signal</span>
-                            <span style="color: var(--gray);" id="gpsStatus">Waiting...</span>
+                            <span><i class="fas fa-satellite-dish" style="color: var(--primary);"></i> Sinyal GPS</span>
+                            <span style="color: var(--gray);" id="gpsStatus">Menunggu...</span>
                         </div>
                         <div class="accuracy-meter">
                             <div class="accuracy-fill" id="accuracyFill" style="width: 0%;"></div>
                         </div>
                         <div class="coord-grid">
                             <div class="coord-item">
-                                <div class="coord-label">Latitude</div>
+                                <div class="coord-label">Lintang</div>
                                 <div class="coord-value" id="currentLat">0.000000</div>
                             </div>
                             <div class="coord-item">
-                                <div class="coord-label">Longitude</div>
+                                <div class="coord-label">Bujur</div>
                                 <div class="coord-value" id="currentLng">0.000000</div>
                             </div>
                             <div class="coord-item">
-                                <div class="coord-label">Accuracy</div>
+                                <div class="coord-label">Akurasi</div>
                                 <div class="coord-value" id="currentAccuracy">±0.0m</div>
                             </div>
                         </div>
@@ -1416,46 +1567,38 @@
 
             <!-- ANALYTICS SECTION -->
             <div class="section" id="analyticsSection">
-                <h1 style="font-family: 'Space Grotesk', sans-serif;">Analytics</h1>
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <i class="fas fa-chart-line"></i>
-                            <span class="feature-title">Customer Growth</span>
-                        </div>
-                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; color: var(--gray);">
-                            <span id="analyticsGrowth">0 customers</span>
-                        </div>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Analitik</h1>
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 20px;">Pertumbuhan Pelanggan</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="growthChart"></canvas>
                     </div>
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <i class="fas fa-dollar-sign"></i>
-                            <span class="feature-title">Revenue Overview</span>
-                        </div>
-                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; color: var(--gray);">
-                            <span id="analyticsRevenue">$0</span>
-                        </div>
+                </div>
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 20px;">Pendapatan per Paket</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="revenuePackageChart"></canvas>
                     </div>
                 </div>
             </div>
 
             <!-- BILLING SECTION -->
             <div class="section" id="billingSection">
-                <h1 style="font-family: 'Space Grotesk', sans-serif;">Billing</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Pembayaran</h1>
                 <div class="table-container">
                     <table id="billingTable">
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Customer</th>
-                                <th>Package</th>
-                                <th>Amount</th>
+                                <th>Tanggal</th>
+                                <th>Pelanggan</th>
+                                <th>Metode</th>
+                                <th>Jumlah</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="billingTableBody">
                             <tr>
-                                <td colspan="5" style="text-align: center; padding: 40px;">No transactions yet</td>
+                                <td colspan="5" style="text-align: center; padding: 40px;">Belum ada transaksi</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1464,26 +1607,26 @@
 
             <!-- INVENTORY SECTION -->
             <div class="section" id="inventorySection">
-                <h1 style="font-family: 'Space Grotesk', sans-serif;">Inventory</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Inventaris</h1>
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-value" id="routerCount">0</div>
-                        <div class="stat-label">Routers</div>
+                        <div class="stat-label">Router</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value" id="cableCount">0</div>
-                        <div class="stat-label">Cables (m)</div>
+                        <div class="stat-label">Kabel (m)</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value" id="apCount">0</div>
-                        <div class="stat-label">Access Points</div>
+                        <div class="stat-label">Access Point</div>
                     </div>
                 </div>
             </div>
 
-            <!-- CALENDAR SECTION - ACCURATE WORKING CALENDAR -->
+            <!-- CALENDAR SECTION - FIXED -->
             <div class="section" id="calendarSection">
-                <h1 style="font-family: 'Space Grotesk', sans-serif; margin-bottom: 30px;">Schedule Calendar</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif; margin-bottom: 30px;">Kalender Jadwal</h1>
                 <div class="calendar-container">
                     <div id="calendar"></div>
                 </div>
@@ -1491,11 +1634,11 @@
 
             <!-- TASKS SECTION -->
             <div class="section" id="tasksSection">
-                <h1 style="font-family: 'Space Grotesk', sans-serif;">Tasks</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Tugas</h1>
                 <div class="feature-grid" id="tasksList">
                     <div class="feature-card">
                         <div style="display: flex; justify-content: space-between;">
-                            <span>No tasks</span>
+                            <span>Belum ada tugas</span>
                         </div>
                     </div>
                 </div>
@@ -1503,15 +1646,15 @@
 
             <!-- PROFILE SECTION -->
             <div class="section" id="profileSection">
-                <h1 style="font-family: 'Space Grotesk', sans-serif;">My Profile</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Profil Saya</h1>
                 <div class="feature-card">
                     <div class="form-group">
                         <label>Username</label>
-                        <input type="text" value="admin" readonly>
+                        <input type="text" id="profileUsernameField" value="admin" readonly>
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" value="admin@flow.com" readonly>
+                        <input type="email" id="profileEmailField" value="admin@flow.com" readonly>
                     </div>
                     <div class="form-group">
                         <label>Role</label>
@@ -1522,87 +1665,89 @@
 
             <!-- SETTINGS SECTION -->
             <div class="section" id="settingsSection">
-                <h1 style="font-family: 'Space Grotesk', sans-serif;">Settings</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Pengaturan</h1>
                 <div class="feature-card">
                     <div class="form-group">
-                        <label>Company Name</label>
-                        <input type="text" value="flō Networks">
+                        <label>Nama Perusahaan</label>
+                        <input type="text" value="flō Networks" id="companyName">
                     </div>
                     <div class="form-group">
-                        <label>Currency</label>
-                        <select>
-                            <option>USD ($)</option>
-                            <option>EUR (€)</option>
-                            <option>IDR (Rp)</option>
+                        <label>Mata Uang</label>
+                        <select id="currency">
+                            <option value="IDR" selected>Rupiah (Rp)</option>
+                            <option value="USD">Dollar ($)</option>
                         </select>
                     </div>
-                    <button class="btn" onclick="showToast('Settings saved')">Save Settings</button>
+                    <button class="btn" onclick="saveSettings()">Simpan Pengaturan</button>
                 </div>
             </div>
 
             <!-- SUPPORT SECTION -->
             <div class="section" id="supportSection">
-                <h1 style="font-family: 'Space Grotesk', sans-serif;">Support</h1>
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Bantuan</h1>
                 <div class="feature-card">
                     <p><i class="fas fa-envelope"></i> support@flow.com</p>
-                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <p><i class="fas fa-phone"></i> +62 21 1234 5678</p>
                     <p><i class="fas fa-clock"></i> 24/7 Support</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- ADD CUSTOMER MODAL -->
+    <!-- ADD CUSTOMER MODAL - WITH DATE PICKER -->
     <div class="modal" id="addCustomerModal">
         <div class="modal-content">
-            <h2>Add New Customer</h2>
+            <h2>Tambah Pelanggan Baru</h2>
             <form id="addCustomerForm">
                 <div class="form-group">
-                    <label>Full name *</label>
+                    <label>Nama Lengkap *</label>
                     <input type="text" id="customerName" required placeholder="John Doe">
                 </div>
                 <div class="form-group">
-                    <label>Phone number *</label>
-                    <input type="tel" id="customerPhone" required placeholder="+62 812-3456-7890">
+                    <label>Nomor Telepon *</label>
+                    <input type="tel" id="customerPhone" required placeholder="0812-3456-7890">
                 </div>
                 <div class="form-group">
                     <label>Email</label>
                     <input type="email" id="customerEmail" placeholder="john@example.com">
                 </div>
                 <div class="form-group">
-                    <label>Package</label>
+                    <label>Paket</label>
                     <select id="customerPackage">
-                        <option value="Basic 10Mbps" data-price="15">Basic 10Mbps - 200K</option>
-                        <option value="Standard 15Mbps" data-price="25">Standard 20Mbps - 250K</option>
-                        <option value="Premium 20Mbps" data-price="40">Premium 25Mbps - 300K</option>
-                        <option value="Ultra 30Mbps" data-price="75">Ultra 30Mbps - 350K</option>
-                        <option value="VVIP 40Mbps" data-price="75">VVIP 40Mbps - 400K</option>
+                        <option value="Basic 10Mbps" data-price="150000">Basic 10Mbps - Rp 150.000</option>
+                        <option value="Standard 20Mbps" data-price="250000">Standard 20Mbps - Rp 250.000</option>
+                        <option value="Premium 50Mbps" data-price="400000">Premium 50Mbps - Rp 400.000</option>
+                        <option value="Ultra 100Mbps" data-price="750000">Ultra 100Mbps - Rp 750.000</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Address</label>
-                    <input type="text" id="customerAddress" placeholder="Customer address">
+                    <label>Tanggal Daftar *</label>
+                    <input type="text" id="customerDate" class="datepicker" placeholder="Pilih tanggal" required>
+                </div>
+                <div class="form-group">
+                    <label>Alamat</label>
+                    <input type="text" id="customerAddress" placeholder="Alamat lengkap">
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('addCustomerModal')">Cancel</button>
-                    <button type="submit" class="btn" style="flex:2;">Save Customer</button>
+                    <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('addCustomerModal')">Batal</button>
+                    <button type="submit" class="btn" style="flex:2;">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- EDIT CUSTOMER MODAL -->
+    <!-- EDIT CUSTOMER MODAL - WITH DATE PICKER -->
     <div class="modal" id="editCustomerModal">
         <div class="modal-content">
-            <h2>Edit Customer</h2>
+            <h2>Edit Pelanggan</h2>
             <form id="editCustomerForm">
                 <input type="hidden" id="editCustomerId">
                 <div class="form-group">
-                    <label>Full name</label>
+                    <label>Nama Lengkap</label>
                     <input type="text" id="editCustomerName" required>
                 </div>
                 <div class="form-group">
-                    <label>Phone number</label>
+                    <label>Nomor Telepon</label>
                     <input type="tel" id="editCustomerPhone" required>
                 </div>
                 <div class="form-group">
@@ -1610,22 +1755,25 @@
                     <input type="email" id="editCustomerEmail">
                 </div>
                 <div class="form-group">
-                    <label>Package</label>
+                    <label>Paket</label>
                     <select id="editCustomerPackage">
-                        <option value="Basic 10Mbps" data-price="15">Basic 10Mbps - 200K</option>
-                        <option value="Standard 15Mbps" data-price="25">Standard 20Mbps - 250K</option>
-                        <option value="Premium 20Mbps" data-price="40">Premium 25Mbps - 300K</option>
-                        <option value="Ultra 30Mbps" data-price="75">Ultra 30Mbps - 350K</option>
-                        <option value="VVIP 40Mbps" data-price="85">VVIP 40Mbps - 400K</option>
+                        <option value="Basic 10Mbps" data-price="150000">Basic 10Mbps - Rp 150.000</option>
+                        <option value="Standard 20Mbps" data-price="250000">Standard 20Mbps - Rp 250.000</option>
+                        <option value="Premium 50Mbps" data-price="400000">Premium 50Mbps - Rp 400.000</option>
+                        <option value="Ultra 100Mbps" data-price="750000">Ultra 100Mbps - Rp 750.000</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Address</label>
+                    <label>Tanggal Daftar</label>
+                    <input type="text" id="editCustomerDate" class="datepicker" required>
+                </div>
+                <div class="form-group">
+                    <label>Alamat</label>
                     <input type="text" id="editCustomerAddress">
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('editCustomerModal')">Cancel</button>
-                    <button type="submit" class="btn" style="flex:2;">Update Customer</button>
+                    <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('editCustomerModal')">Batal</button>
+                    <button type="submit" class="btn" style="flex:2;">Update</button>
                 </div>
             </form>
         </div>
@@ -1634,33 +1782,33 @@
     <!-- ADD PAYMENT MODAL -->
     <div class="modal" id="addPaymentModal">
         <div class="modal-content">
-            <h2>Record Payment</h2>
+            <h2>Catat Pembayaran</h2>
             <form id="addPaymentForm">
                 <div class="form-group">
-                    <label>Customer</label>
+                    <label>Pelanggan</label>
                     <select id="paymentCustomer" required>
-                        <option value="">Select customer</option>
+                        <option value="">Pilih pelanggan</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Amount ($)</label>
-                    <input type="number" id="paymentAmount" required min="1" step="0.01">
+                    <label>Jumlah (Rp)</label>
+                    <input type="number" id="paymentAmount" required min="1" step="1000">
                 </div>
                 <div class="form-group">
-                    <label>Payment Date</label>
-                    <input type="date" id="paymentDate" required value="<?php echo date('Y-m-d'); ?>">
+                    <label>Tanggal Pembayaran</label>
+                    <input type="text" id="paymentDate" class="datepicker" required>
                 </div>
                 <div class="form-group">
-                    <label>Method</label>
+                    <label>Metode</label>
                     <select id="paymentMethod">
-                        <option>Cash</option>
-                        <option>Bank Transfer</option>
-                        <option>Credit Card</option>
+                        <option>Tunai</option>
+                        <option>Transfer Bank</option>
+                        <option>Kartu Kredit</option>
                     </select>
                 </div>
                 <div style="display: flex; gap: 10px;">
-                    <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('addPaymentModal')">Cancel</button>
-                    <button type="submit" class="btn" style="flex:2;">Record Payment</button>
+                    <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('addPaymentModal')">Batal</button>
+                    <button type="submit" class="btn" style="flex:2;">Simpan</button>
                 </div>
             </form>
         </div>
@@ -1669,12 +1817,12 @@
     <!-- DELETE CONFIRMATION MODAL -->
     <div class="modal" id="deleteModal">
         <div class="modal-content">
-            <h2 style="color: var(--danger);">Confirm Delete</h2>
-            <p style="margin: 20px 0; color: var(--gray);">Are you sure you want to delete this customer? This action cannot be undone.</p>
+            <h2 style="color: var(--danger);">Konfirmasi Hapus</h2>
+            <p style="margin: 20px 0; color: var(--gray);">Apakah Anda yakin ingin menghapus pelanggan ini? Tindakan ini tidak dapat dibatalkan.</p>
             <input type="hidden" id="deleteCustomerId">
             <div style="display: flex; gap: 10px;">
-                <button class="btn btn-outline" style="flex:1;" onclick="closeModal('deleteModal')">Cancel</button>
-                <button class="btn btn-danger" style="flex:1;" onclick="confirmDelete()">Delete</button>
+                <button class="btn btn-outline" style="flex:1;" onclick="closeModal('deleteModal')">Batal</button>
+                <button class="btn btn-danger" style="flex:1;" onclick="confirmDelete()">Hapus</button>
             </div>
         </div>
     </div>
@@ -1682,40 +1830,168 @@
     <!-- Toast Notification -->
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i>
-        <span id="toastMessage">Action completed</span>
+        <span id="toastMessage">Berhasil</span>
     </div>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/id.js"></script>
     
     <script>
+        // ==================== USER AUTHENTICATION SYSTEM ====================
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        // Create default admin with new password PUTRI R if no users exist
+        if (users.length === 0) {
+            users.push({
+                id: 1,
+                username: 'admin',
+                password: 'PUTRI R',
+                email: 'admin@flow.com',
+                name: 'Admin User'
+            });
+            localStorage.setItem('users', JSON.stringify(users));
+        } else {
+            // Update existing admin password to PUTRI R
+            const adminUser = users.find(u => u.username === 'admin');
+            if (adminUser) {
+                adminUser.password = 'PUTRI R';
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+        }
+
+        let currentUser = null;
+
+        // Login function - UPDATED with new credentials
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const errorDiv = document.getElementById('loginError');
+            
+            // Find user in database
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                // Login successful
+                currentUser = user;
+                errorDiv.classList.remove('show');
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                
+                // Update profile info
+                document.getElementById('profileUsername').textContent = user.username;
+                document.getElementById('profileUsernameField').value = user.username;
+                document.getElementById('profileEmailField').value = user.email;
+                document.getElementById('dropdownName').textContent = user.name || user.username;
+                document.getElementById('dropdownEmail').textContent = user.email;
+                document.getElementById('profileAvatar').textContent = (user.username[0] || 'A').toUpperCase();
+                
+                // Initialize all features with slight delay to ensure DOM is ready
+                setTimeout(() => {
+                    initMap();
+                    startGPS();
+                    initCalendar(); // Calendar initialization with delay
+                    initCharts();
+                    initDatePickers();
+                    updateAllDisplays();
+                }, 100);
+                
+                showToast('Selamat datang, ' + user.username + '!');
+            } else {
+                // Login failed
+                errorDiv.classList.add('show');
+            }
+        });
+
+        // Register new user
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('regUsername').value.trim();
+            const password = document.getElementById('regPassword').value.trim();
+            const confirmPassword = document.getElementById('regConfirmPassword').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            
+            if (!username || !password || !email) {
+                showToast('Semua field harus diisi');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showToast('Password tidak cocok');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showToast('Password minimal 6 karakter');
+                return;
+            }
+            
+            if (users.some(u => u.username === username)) {
+                showToast('Username sudah digunakan');
+                return;
+            }
+            
+            const newUser = {
+                id: Date.now(),
+                username: username,
+                password: password,
+                email: email,
+                name: username
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            closeModal('registerModal');
+            document.getElementById('registerForm').reset();
+            showToast('Registrasi berhasil! Silakan login.');
+        });
+
+        function showRegister() {
+            openModal('registerModal');
+        }
+
         // ==================== DATA STORAGE ====================
         let customers = JSON.parse(localStorage.getItem('customers')) || [];
         let payments = JSON.parse(localStorage.getItem('payments')) || [];
         let calendarEvents = JSON.parse(localStorage.getItem('calendarEvents')) || [];
         
-        // Package prices mapping
+        // Package prices in Rupiah
         const packagePrices = {
-            'Basic 10Mbps': 15,
-            'Standard 20Mbps': 25,
-            'Premium 25Mbps': 40,
-            'Ultra 30Mbps': 75,
-            'VVIP 40Mbps' : 85,
-            
+            'Basic 10Mbps': 150000,
+            'Standard 20Mbps': 250000,
+            'Premium 50Mbps': 400000,
+            'Ultra 100Mbps': 750000
         };
-        
-        // ==================== LOGIN ====================
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            document.getElementById('loginPage').style.display = 'none';
-            document.getElementById('mainApp').style.display = 'block';
-            initMap();
-            startGPS();
-            initCalendar();
-            updateAllDisplays();
-            showToast('Welcome back, Admin!');
-        });
+
+        // ==================== DATE PICKER INITIALIZATION ====================
+        function initDatePickers() {
+            // Configure Flatpickr for Indonesian locale
+            flatpickr.localize(flatpickr.l10ns.id);
+            
+            // Initialize all date pickers
+            flatpickr(".datepicker", {
+                dateFormat: "Y-m-d",
+                allowInput: true,
+                altInput: true,
+                altFormat: "j F Y",
+                locale: "id"
+            });
+            
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            if (document.getElementById('customerDate')) {
+                document.getElementById('customerDate').value = today;
+            }
+            if (document.getElementById('paymentDate')) {
+                document.getElementById('paymentDate').value = today;
+            }
+        }
 
         // ==================== PROFILE DROPDOWN ====================
         function toggleProfileDropdown(event) {
@@ -1725,7 +2001,6 @@
             document.getElementById('profileDropdown').classList.toggle('active');
         }
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('profileDropdown');
             const profile = document.querySelector('.user-profile');
@@ -1739,13 +2014,13 @@
         function toggleMenu() {
             document.getElementById('sidebarMenu').classList.toggle('open');
             document.getElementById('menuOverlay').classList.toggle('active');
-            document.getElementById('STARSBtn').classList.toggle('active');
+            document.getElementById('hamburgerBtn').classList.toggle('active');
         }
 
         function closeMenu() {
             document.getElementById('sidebarMenu').classList.remove('open');
             document.getElementById('menuOverlay').classList.remove('active');
-            document.getElementById('STARSBtn').classList.remove('active');
+            document.getElementById('hamburgerBtn').classList.remove('active');
         }
 
         // ==================== SHOW SECTION ====================
@@ -1756,9 +2031,8 @@
             const sectionId = section + 'Section';
             document.getElementById(sectionId).classList.add('active');
             
-            // Update active menu
             document.querySelectorAll('.menu-item').forEach(item => {
-                if (item.querySelector('span').textContent.toLowerCase() === section.toLowerCase()) {
+                if (item.querySelector('span') && item.querySelector('span').textContent.toLowerCase().includes(section.toLowerCase())) {
                     item.classList.add('active');
                 }
             });
@@ -1771,8 +2045,16 @@
             }
             if (section === 'calendar') {
                 setTimeout(() => {
-                    if (calendar) calendar.render();
+                    if (calendar) {
+                        calendar.render();
+                        calendar.updateSize();
+                    } else {
+                        initCalendar();
+                    }
                 }, 100);
+            }
+            if (section === 'analytics') {
+                setTimeout(() => updateCharts(), 100);
             }
         }
 
@@ -1780,20 +2062,19 @@
         function addCustomer(event) {
             event.preventDefault();
             
-            // Get form values
             const name = document.getElementById('customerName').value.trim();
             const phone = document.getElementById('customerPhone').value.trim();
             const email = document.getElementById('customerEmail').value.trim() || '-';
             const package_sel = document.getElementById('customerPackage').value;
+            const date = document.getElementById('customerDate').value || new Date().toISOString().split('T')[0];
             const address = document.getElementById('customerAddress').value.trim() || '-';
-            const price = packagePrices[package_sel] || 25;
+            const price = packagePrices[package_sel] || 150000;
             
             if (!name || !phone) {
-                showToast('Please fill in required fields');
+                showToast('Nama dan telepon harus diisi');
                 return;
             }
             
-            // Create customer object
             const customer = {
                 id: Date.now(),
                 name: name,
@@ -1803,7 +2084,7 @@
                 price: price,
                 address: address,
                 status: 'active',
-                date: new Date().toISOString().split('T')[0],
+                date: date,
                 location: getRandomLocation()
             };
             
@@ -1811,7 +2092,7 @@
             localStorage.setItem('customers', JSON.stringify(customers));
             
             // Add to calendar (installation after 2 days)
-            const installDate = new Date();
+            const installDate = new Date(date);
             installDate.setDate(installDate.getDate() + 2);
             calendarEvents.push({
                 id: 'event-' + Date.now(),
@@ -1825,15 +2106,20 @@
             updateAllDisplays();
             closeModal('addCustomerModal');
             document.getElementById('addCustomerForm').reset();
-            showToast('Customer added successfully!');
             
-            // Refresh calendar
+            // Reset date picker to today
+            const today = new Date().toISOString().split('T')[0];
+            if (document.getElementById('customerDate')) {
+                document.getElementById('customerDate').value = today;
+            }
+            
+            showToast('Pelanggan berhasil ditambahkan!');
+            
             if (calendar) {
                 calendar.refetchEvents();
             }
         }
 
-        // Edit customer
         function editCustomer(id) {
             const customer = customers.find(c => c.id === id);
             if (!customer) return;
@@ -1843,12 +2129,12 @@
             document.getElementById('editCustomerPhone').value = customer.phone;
             document.getElementById('editCustomerEmail').value = customer.email;
             document.getElementById('editCustomerPackage').value = customer.package;
+            document.getElementById('editCustomerDate').value = customer.date || new Date().toISOString().split('T')[0];
             document.getElementById('editCustomerAddress').value = customer.address;
             
             openModal('editCustomerModal');
         }
 
-        // Update customer
         function updateCustomer(event) {
             event.preventDefault();
             
@@ -1862,18 +2148,22 @@
                     phone: document.getElementById('editCustomerPhone').value,
                     email: document.getElementById('editCustomerEmail').value,
                     package: document.getElementById('editCustomerPackage').value,
-                    price: packagePrices[document.getElementById('editCustomerPackage').value] || 25,
+                    price: packagePrices[document.getElementById('editCustomerPackage').value] || 150000,
+                    date: document.getElementById('editCustomerDate').value,
                     address: document.getElementById('editCustomerAddress').value
                 };
                 
                 localStorage.setItem('customers', JSON.stringify(customers));
                 updateAllDisplays();
                 closeModal('editCustomerModal');
-                showToast('Customer updated successfully');
+                showToast('Pelanggan berhasil diupdate');
+                
+                if (calendar) {
+                    calendar.refetchEvents();
+                }
             }
         }
 
-        // Delete customer
         function deleteCustomer(id) {
             document.getElementById('deleteCustomerId').value = id;
             openModal('deleteModal');
@@ -1886,10 +2176,13 @@
             
             updateAllDisplays();
             closeModal('deleteModal');
-            showToast('Customer deleted successfully');
+            showToast('Pelanggan berhasil dihapus');
+            
+            if (calendar) {
+                calendar.refetchEvents();
+            }
         }
 
-        // Display customers
         function displayCustomers() {
             const tbody = document.getElementById('customersTableBody');
             const recentBody = document.getElementById('recentCustomersBody');
@@ -1897,9 +2190,9 @@
             if (customers.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="6" style="text-align: center; color: var(--gray); padding: 60px;">
+                        <td colspan="7" style="text-align: center; color: var(--gray); padding: 60px;">
                             <i class="fas fa-user-slash" style="font-size: 2em; margin-bottom: 10px;"></i><br>
-                            No customers yet. Click "Add customer" to create one.
+                            Belum ada pelanggan. Klik "Tambah Pelanggan" untuk membuat.
                         </td>
                     </tr>
                 `;
@@ -1908,7 +2201,7 @@
                         <tr>
                             <td colspan="5" style="text-align: center; color: var(--gray); padding: 40px;">
                                 <i class="fas fa-user-plus" style="font-size: 2em; margin-bottom: 10px;"></i><br>
-                                Click "Add Customer" to get started
+                                Klik "Tambah Pelanggan" untuk memulai
                             </td>
                         </tr>
                     `;
@@ -1916,21 +2209,22 @@
                 return;
             }
             
-            // Build customers table
             let html = '';
             customers.slice().reverse().forEach(c => {
+                const displayDate = c.date ? new Date(c.date).toLocaleDateString('id-ID') : '-';
                 html += `
                     <tr>
                         <td>${c.name}</td>
                         <td>${c.phone}</td>
                         <td>${c.package}</td>
-                        <td>$${c.price || 25}</td>
-                        <td><span class="badge badge-success">Active</span></td>
+                        <td>Rp ${(c.price || 150000).toLocaleString('id-ID')}</td>
+                        <td>${displayDate}</td>
+                        <td><span class="badge badge-success">Aktif</span></td>
                         <td>
                             <button class="action-btn" onclick="editCustomer(${c.id})" title="Edit">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="action-btn delete" onclick="deleteCustomer(${c.id})" title="Delete">
+                            <button class="action-btn delete" onclick="deleteCustomer(${c.id})" title="Hapus">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
@@ -1939,7 +2233,6 @@
             });
             tbody.innerHTML = html;
             
-            // Build recent customers (last 5)
             let recentHtml = '';
             const recent = customers.slice(-5).reverse();
             recent.forEach(c => {
@@ -1948,8 +2241,8 @@
                         <td>${c.name}</td>
                         <td>${c.phone}</td>
                         <td>${c.package}</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td>$${c.price || 25}</td>
+                        <td><span class="badge badge-success">Aktif</span></td>
+                        <td>Rp ${(c.price || 150000).toLocaleString('id-ID')}</td>
                     </tr>
                 `;
             });
@@ -1968,7 +2261,7 @@
             const method = document.getElementById('paymentMethod').value;
             
             if (!customerId || !amount) {
-                showToast('Please fill all fields');
+                showToast('Semua field harus diisi');
                 return;
             }
             
@@ -1986,109 +2279,223 @@
             payments.push(payment);
             localStorage.setItem('payments', JSON.stringify(payments));
             
-            // Update customer status (paid)
-            if (customer) {
-                customer.lastPayment = date;
-                customer.totalPaid = (customer.totalPaid || 0) + amount;
-                localStorage.setItem('customers', JSON.stringify(customers));
-            }
-            
             updateAllDisplays();
             closeModal('addPaymentModal');
             document.getElementById('addPaymentForm').reset();
-            showToast('Payment recorded successfully');
+            
+            // Reset date picker
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('paymentDate').value = today;
+            
+            showToast('Pembayaran berhasil dicatat');
+            
+            if (calendar) {
+                calendar.refetchEvents();
+            }
         }
 
-        // Populate payment customer dropdown
         function populatePaymentCustomers() {
             const select = document.getElementById('paymentCustomer');
             if (!select) return;
             
-            let options = '<option value="">Select customer</option>';
+            let options = '<option value="">Pilih pelanggan</option>';
             customers.forEach(c => {
                 options += `<option value="${c.id}">${c.name} - ${c.package}</option>`;
             });
             select.innerHTML = options;
         }
 
-        // ==================== CALENDAR FUNCTIONS ====================
-        let calendar;
-        function initCalendar() {
-            const calendarEl = document.getElementById('calendar');
-            if (!calendarEl) return;
-            
-            calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                themeSystem: 'standard',
-                height: 600,
-                events: getCalendarEvents(),
-                eventClick: function(info) {
-                    showToast('Event: ' + info.event.title);
-                },
-                dateClick: function(info) {
-                    const title = prompt('Enter event title:');
-                    if (title) {
-                        calendar.addEvent({
-                            title: title,
-                            start: info.dateStr,
-                            allDay: true,
-                            backgroundColor: '#6366f1'
-                        });
-                        
-                        // Save to storage
-                        calendarEvents.push({
-                            id: 'event-' + Date.now(),
-                            title: title,
-                            start: info.dateStr,
-                            allDay: true
-                        });
-                        localStorage.setItem('calendarEvents', JSON.stringify(calendarEvents));
-                        showToast('Event added to calendar');
+        // ==================== LIVE CHARTS ====================
+        let revenueChart, packageChart, growthChart, revenuePackageChart;
+
+        function initCharts() {
+            const ctx1 = document.getElementById('revenueChart')?.getContext('2d');
+            if (ctx1) {
+                revenueChart = new Chart(ctx1, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+                        datasets: [{
+                            label: 'Pendapatan (Rp)',
+                            data: generateMonthlyRevenue(),
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { labels: { color: 'white' } }
+                        },
+                        scales: {
+                            y: { 
+                                grid: { color: 'rgba(255,255,255,0.1)' }, 
+                                ticks: { color: 'white', callback: value => 'Rp ' + value.toLocaleString('id-ID') }
+                            },
+                            x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: 'white' } }
+                        }
                     }
+                });
+            }
+
+            const ctx2 = document.getElementById('packageChart')?.getContext('2d');
+            if (ctx2) {
+                packageChart = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: getPackageDistribution(),
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { labels: { color: 'white' } }
+                        }
+                    }
+                });
+            }
+
+            const ctx3 = document.getElementById('growthChart')?.getContext('2d');
+            if (ctx3) {
+                growthChart = new Chart(ctx3, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'],
+                        datasets: [{
+                            label: 'Pelanggan Baru',
+                            data: generateGrowthData(),
+                            backgroundColor: '#6366f1'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { labels: { color: 'white' } }
+                        },
+                        scales: {
+                            y: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: 'white' } },
+                            x: { grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: 'white' } }
+                        }
+                    }
+                });
+            }
+
+            const ctx4 = document.getElementById('revenuePackageChart')?.getContext('2d');
+            if (ctx4) {
+                revenuePackageChart = new Chart(ctx4, {
+                    type: 'pie',
+                    data: getRevenueByPackage(),
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { labels: { color: 'white' } }
+                        }
+                    }
+                });
+            }
+        }
+
+        function generateMonthlyRevenue() {
+            const months = 12;
+            const data = [];
+            const baseRevenue = customers.reduce((sum, c) => sum + (c.price || 150000), 0);
+            
+            for (let i = 0; i < months; i++) {
+                const variation = 0.8 + Math.random() * 0.4;
+                data.push(Math.round(baseRevenue * variation));
+            }
+            return data;
+        }
+
+        function generateGrowthData() {
+            const weekly = [0, 0, 0, 0];
+            const now = new Date();
+            const weekInMs = 7 * 24 * 60 * 60 * 1000;
+            
+            customers.forEach(c => {
+                const date = new Date(c.date || now);
+                const diff = now - date;
+                const week = Math.floor(diff / weekInMs);
+                if (week >= 0 && week < 4) {
+                    weekly[3 - week]++;
                 }
             });
             
-            calendar.render();
+            return weekly;
         }
 
-        function getCalendarEvents() {
-            const events = [];
+        function getPackageDistribution() {
+            const packages = {
+                'Basic 10Mbps': 0,
+                'Standard 20Mbps': 0,
+                'Premium 50Mbps': 0,
+                'Ultra 100Mbps': 0
+            };
             
-            // Add customer installations (2 days after creation)
             customers.forEach(c => {
-                const installDate = new Date(c.date);
-                installDate.setDate(installDate.getDate() + 2);
-                events.push({
-                    id: 'install-' + c.id,
-                    title: 'Install: ' + c.name,
-                    start: installDate.toISOString().split('T')[0],
-                    allDay: true,
-                    backgroundColor: '#6366f1'
-                });
+                if (packages[c.package] !== undefined) {
+                    packages[c.package]++;
+                } else {
+                    packages['Basic 10Mbps']++;
+                }
             });
             
-            // Add payments
-            payments.forEach(p => {
-                events.push({
-                    id: 'payment-' + p.id,
-                    title: 'Payment: ' + p.customerName + ' $' + p.amount,
-                    start: p.date,
-                    allDay: true,
-                    backgroundColor: '#10b981'
-                });
+            return {
+                labels: Object.keys(packages),
+                datasets: [{
+                    data: Object.values(packages),
+                    backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444']
+                }]
+            };
+        }
+
+        function getRevenueByPackage() {
+            const revenue = {
+                'Basic 10Mbps': 0,
+                'Standard 20Mbps': 0,
+                'Premium 50Mbps': 0,
+                'Ultra 100Mbps': 0
+            };
+            
+            customers.forEach(c => {
+                const pkg = c.package;
+                const price = c.price || 150000;
+                if (revenue[pkg] !== undefined) {
+                    revenue[pkg] += price;
+                } else {
+                    revenue['Basic 10Mbps'] += price;
+                }
             });
             
-            // Add saved events
-            calendarEvents.forEach(e => {
-                events.push(e);
-            });
-            
-            return events;
+            return {
+                labels: Object.keys(revenue),
+                datasets: [{
+                    data: Object.values(revenue),
+                    backgroundColor: ['#6366f1', '#10b981', '#f59e0b', '#ef4444']
+                }]
+            };
+        }
+
+        function updateCharts() {
+            if (revenueChart) {
+                revenueChart.data.datasets[0].data = generateMonthlyRevenue();
+                revenueChart.update();
+            }
+            if (packageChart) {
+                packageChart.data = getPackageDistribution();
+                packageChart.update();
+            }
+            if (growthChart) {
+                growthChart.data.datasets[0].data = generateGrowthData();
+                growthChart.update();
+            }
+            if (revenuePackageChart) {
+                revenuePackageChart.data = getRevenueByPackage();
+                revenuePackageChart.update();
+            }
         }
 
         // ==================== MAP FUNCTIONS ====================
@@ -2096,11 +2503,15 @@
         let mapMarkers = [];
         
         function initMap() {
-            map = L.map('map').setView([40.7128, -74.0060], 10);
+            if (!document.getElementById('map')) return;
+            
+            map = L.map('map').setView([-6.2088, 106.8456], 11);
             setMapLayer('street');
         }
 
         function setMapLayer(layer) {
+            if (!map) return;
+            
             map.eachLayer(l => {
                 if (l instanceof L.TileLayer) map.removeLayer(l);
             });
@@ -2117,39 +2528,41 @@
         }
 
         function showCustomerLocations() {
+            if (!map) return;
+            
             mapMarkers.forEach(m => map.removeLayer(m));
             mapMarkers = [];
             
             customers.forEach(c => {
                 if (c.location) {
                     const marker = L.marker([c.location.lat, c.location.lng]).addTo(map)
-                        .bindPopup(`<b>${c.name}</b><br>${c.package}<br>$${c.price}/mo`);
+                        .bindPopup(`<b>${c.name}</b><br>${c.package}<br>Rp ${(c.price || 150000).toLocaleString('id-ID')}/bln`);
                     mapMarkers.push(marker);
                 }
             });
             
             if (customers.length > 0) {
-                showToast('Showing ' + customers.length + ' customer locations');
+                showToast('Menampilkan ' + customers.length + ' lokasi pelanggan');
             }
         }
 
         function getRandomLocation() {
             return {
-                lat: 40.7128 + (Math.random() - 0.5) * 0.2,
-                lng: -74.0060 + (Math.random() - 0.5) * 0.2
+                lat: -6.2 + (Math.random() - 0.5) * 0.3,
+                lng: 106.8 + (Math.random() - 0.5) * 0.3
             };
         }
 
         // ==================== GPS FUNCTIONS ====================
         function startGPS() {
             if (navigator.geolocation) {
-                document.getElementById('gpsStatus').textContent = 'Searching...';
+                document.getElementById('gpsStatus').textContent = 'Mencari...';
                 
                 navigator.geolocation.watchPosition(pos => {
                     document.getElementById('currentLat').textContent = pos.coords.latitude.toFixed(6);
                     document.getElementById('currentLng').textContent = pos.coords.longitude.toFixed(6);
                     document.getElementById('currentAccuracy').textContent = '±' + pos.coords.accuracy.toFixed(1) + 'm';
-                    document.getElementById('gpsStatus').textContent = 'Connected';
+                    document.getElementById('gpsStatus').textContent = 'Terhubung';
                     
                     const accuracy = Math.min(100, Math.max(0, 100 - (pos.coords.accuracy * 2)));
                     document.getElementById('accuracyFill').style.width = accuracy + '%';
@@ -2160,56 +2573,152 @@
         }
 
         function getUserLocation() {
-            if (navigator.geolocation) {
+            if (navigator.geolocation && map) {
                 navigator.geolocation.getCurrentPosition(pos => {
                     map.setView([pos.coords.latitude, pos.coords.longitude], 16);
                     L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(map)
-                        .bindPopup('You are here').openPopup();
+                        .bindPopup('Lokasi Anda').openPopup();
                 });
             }
         }
 
+        // ==================== CALENDAR FUNCTIONS - FIXED ====================
+        let calendar;
+        
+        function initCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            if (!calendarEl) {
+                console.log('Calendar element not found');
+                return;
+            }
+            
+            try {
+                // Destroy existing calendar if any
+                if (calendar) {
+                    calendar.destroy();
+                }
+                
+                calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    themeSystem: 'standard',
+                    height: 650,
+                    events: getCalendarEvents(),
+                    eventClick: function(info) {
+                        showToast('Event: ' + info.event.title);
+                    },
+                    dateClick: function(info) {
+                        const title = prompt('Nama jadwal:');
+                        if (title) {
+                            calendar.addEvent({
+                                title: title,
+                                start: info.dateStr,
+                                allDay: true,
+                                backgroundColor: '#6366f1'
+                            });
+                            
+                            calendarEvents.push({
+                                id: 'event-' + Date.now(),
+                                title: title,
+                                start: info.dateStr,
+                                allDay: true
+                            });
+                            localStorage.setItem('calendarEvents', JSON.stringify(calendarEvents));
+                            showToast('Jadwal ditambahkan');
+                        }
+                    },
+                    eventDidMount: function(info) {
+                        // Style events
+                        info.el.style.backgroundColor = info.event.backgroundColor || '#6366f1';
+                        info.el.style.border = 'none';
+                        info.el.style.color = 'white';
+                        info.el.style.padding = '2px 4px';
+                        info.el.style.borderRadius = '4px';
+                        info.el.style.cursor = 'pointer';
+                    }
+                });
+                
+                calendar.render();
+                console.log('Calendar initialized successfully');
+            } catch (error) {
+                console.error('Calendar initialization error:', error);
+            }
+        }
+
+        function getCalendarEvents() {
+            const events = [];
+            
+            // Add customer installations
+            customers.forEach(c => {
+                if (c.date) {
+                    const installDate = new Date(c.date);
+                    installDate.setDate(installDate.getDate() + 2);
+                    events.push({
+                        id: 'install-' + c.id,
+                        title: 'Install: ' + c.name,
+                        start: installDate.toISOString().split('T')[0],
+                        allDay: true,
+                        backgroundColor: '#6366f1'
+                    });
+                }
+            });
+            
+            // Add payments
+            payments.forEach(p => {
+                if (p.date) {
+                    events.push({
+                        id: 'payment-' + p.id,
+                        title: 'Pembayaran: ' + p.customerName + ' Rp ' + (p.amount || 0).toLocaleString('id-ID'),
+                        start: p.date,
+                        allDay: true,
+                        backgroundColor: '#10b981'
+                    });
+                }
+            });
+            
+            // Add saved events
+            calendarEvents.forEach(e => {
+                events.push(e);
+            });
+            
+            return events;
+        }
+
         // ==================== UPDATE ALL DISPLAYS ====================
         function updateAllDisplays() {
-            // Update counts
             document.getElementById('totalCustomers').textContent = customers.length;
             document.getElementById('activeCustomers').textContent = customers.filter(c => c.status === 'active').length;
             document.getElementById('customerCount').textContent = customers.length;
             
-            // Calculate revenue
-            const monthlyRevenue = customers.reduce((sum, c) => sum + (c.price || 25), 0);
-            document.getElementById('totalRevenue').textContent = '$' + monthlyRevenue;
-            document.getElementById('analyticsRevenue').textContent = '$' + monthlyRevenue;
+            const monthlyRevenue = customers.reduce((sum, c) => sum + (c.price || 150000), 0);
+            document.getElementById('totalRevenue').textContent = 'Rp ' + monthlyRevenue.toLocaleString('id-ID');
             
-            // Locations
             document.getElementById('totalLocations').textContent = customers.length;
             
-            // Analytics
-            document.getElementById('analyticsGrowth').textContent = customers.length + ' customers';
+            document.getElementById('routerCount').textContent = customers.length;
+            document.getElementById('cableCount').textContent = customers.length * 15;
+            document.getElementById('apCount').textContent = Math.floor(customers.length * 0.7);
             
-            // Inventory (demo values)
-            document.getElementById('routerCount').textContent = customers.length * 1;
-            document.getElementById('cableCount').textContent = customers.length * 10;
-            document.getElementById('apCount').textContent = Math.floor(customers.length * 0.5);
-            
-            // Refresh displays
             displayCustomers();
             displayBilling();
             populatePaymentCustomers();
+            updateCharts();
             
-            // Update calendar if exists
             if (calendar) {
                 calendar.refetchEvents();
             }
         }
 
-        // Display billing
         function displayBilling() {
             const tbody = document.getElementById('billingTableBody');
             if (!tbody) return;
             
             if (payments.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">No transactions yet</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">Belum ada transaksi</td></tr>';
                 return;
             }
             
@@ -2217,11 +2726,11 @@
             payments.slice(-10).reverse().forEach(p => {
                 html += `
                     <tr>
-                        <td>${p.date}</td>
-                        <td>${p.customerName}</td>
-                        <td>${p.method}</td>
-                        <td>$${p.amount}</td>
-                        <td><span class="badge badge-success">Paid</span></td>
+                        <td>${p.date || '-'}</td>
+                        <td>${p.customerName || '-'}</td>
+                        <td>${p.method || '-'}</td>
+                        <td>Rp ${(p.amount || 0).toLocaleString('id-ID')}</td>
+                        <td><span class="badge badge-success">Lunas</span></td>
                     </tr>
                 `;
             });
@@ -2233,6 +2742,10 @@
             document.getElementById(id).classList.add('active');
             if (id === 'addPaymentModal') {
                 populatePaymentCustomers();
+            }
+            if (id === 'addCustomerModal' || id === 'editCustomerModal' || id === 'addPaymentModal') {
+                // Reinitialize date pickers when modal opens
+                setTimeout(() => initDatePickers(), 50);
             }
         }
 
@@ -2252,6 +2765,11 @@
             }, 3000);
         }
 
+        // ==================== SETTINGS ====================
+        function saveSettings() {
+            showToast('Pengaturan disimpan');
+        }
+
         // ==================== FORM SUBMISSIONS ====================
         document.getElementById('addCustomerForm').addEventListener('submit', addCustomer);
         document.getElementById('editCustomerForm').addEventListener('submit', updateCustomer);
@@ -2259,10 +2777,13 @@
 
         // ==================== LOGOUT ====================
         function logout() {
+            currentUser = null;
             document.getElementById('mainApp').style.display = 'none';
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('profileDropdown').classList.remove('active');
-            showToast('Logged out successfully');
+            document.getElementById('username').value = 'admin';
+            document.getElementById('password').value = 'PUTRI R';
+            showToast('Berhasil logout');
         }
 
         // ==================== CLICK OUTSIDE MODAL ====================
@@ -2274,7 +2795,17 @@
 
         // ==================== INITIAL LOAD ====================
         window.onload = function() {
-            updateAllDisplays();
+            // Set default dates
+            const today = new Date().toISOString().split('T')[0];
+            if (document.getElementById('customerDate')) {
+                document.getElementById('customerDate').value = today;
+            }
+            if (document.getElementById('paymentDate')) {
+                document.getElementById('paymentDate').value = today;
+            }
+            
+            // Initialize date pickers after a short delay
+            setTimeout(initDatePickers, 100);
         };
     </script>
 </body>
