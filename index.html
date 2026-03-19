@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>flō • Zero • Premium Minimalist</title>
+    <title> MyPROJECK</title>
     
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,6 +13,9 @@
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.css" rel="stylesheet">
     
     <style>
         * {
@@ -26,6 +29,7 @@
             --primary-dark: #4f46e5;
             --secondary: #10b981;
             --accent: #f59e0b;
+            --danger: #ef4444;
             --dark: #0f172a;
             --darker: #020617;
             --light: #f8fafc;
@@ -296,7 +300,7 @@
             border: 2px solid var(--dark);
         }
 
-        /* Clickable Profile with Dropdown */
+        /* Clickable Profile with Working Dropdown */
         .profile-container {
             position: relative;
         }
@@ -335,7 +339,7 @@
             top: 60px;
             right: 0;
             width: 240px;
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
@@ -391,16 +395,18 @@
             color: var(--gray);
         }
 
+        .dropdown-divider {
+            height: 1px;
+            background: var(--glass-border);
+            margin: 8px 0;
+        }
+
         .dropdown-item.logout {
-            color: #ef4444;
-            margin-top: 8px;
-            border-top: 1px solid var(--glass-border);
-            border-radius: 0;
-            padding-top: 16px;
+            color: var(--danger);
         }
 
         .dropdown-item.logout i {
-            color: #ef4444;
+            color: var(--danger);
         }
 
         /* Sidebar Menu */
@@ -620,6 +626,7 @@
         .quick-add-card:hover {
             border-color: var(--primary);
             transform: scale(1.02);
+            background: rgba(99, 102, 241, 0.05);
         }
 
         .quick-add-icon {
@@ -750,7 +757,30 @@
 
         .badge-danger {
             background: rgba(239, 68, 68, 0.1);
-            color: #ef4444;
+            color: var(--danger);
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--glass-border);
+            background: transparent;
+            color: var(--gray);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0 4px;
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .action-btn.delete:hover {
+            background: var(--danger);
+            border-color: var(--danger);
         }
 
         /* Map Section */
@@ -850,6 +880,54 @@
             color: var(--primary);
         }
 
+        /* Calendar */
+        .calendar-container {
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 28px;
+            padding: 24px;
+        }
+
+        #calendar {
+            background: transparent;
+            color: white;
+            min-height: 600px;
+        }
+
+        .fc {
+            background: transparent;
+            color: white;
+        }
+
+        .fc-toolbar-title {
+            color: white !important;
+        }
+
+        .fc-button {
+            background: rgba(99, 102, 241, 0.2) !important;
+            border: 1px solid var(--glass-border) !important;
+            color: white !important;
+        }
+
+        .fc-button:hover {
+            background: var(--primary) !important;
+        }
+
+        .fc-day {
+            background: rgba(255, 255, 255, 0.02) !important;
+        }
+
+        .fc-day-today {
+            background: rgba(99, 102, 241, 0.1) !important;
+        }
+
+        .fc-event {
+            background: var(--primary) !important;
+            border: none !important;
+            cursor: pointer;
+        }
+
         /* Modal */
         .modal {
             display: none;
@@ -870,7 +948,7 @@
         }
 
         .modal-content {
-            background: rgba(15, 23, 42, 0.9);
+            background: rgba(15, 23, 42, 0.95);
             backdrop-filter: blur(30px);
             border: 1px solid var(--glass-border);
             border-radius: 32px;
@@ -950,6 +1028,40 @@
             box-shadow: none;
         }
 
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #dc2626);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--primary);
+            border-radius: 100px;
+            padding: 16px 24px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 3000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast i {
+            color: var(--secondary);
+            font-size: 1.2em;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .main-content {
@@ -1002,7 +1114,7 @@
         <div class="login-card">
             <div class="login-header">
                 <h1>flō</h1>
-                <p>Zero • Premium Minimalist</p>
+                <p>Create ByCan</p>
             </div>
             <form id="loginForm">
                 <div class="input-group">
@@ -1011,7 +1123,7 @@
                 </div>
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Password" id="password" value="admin123" required>
+                    <input type="password" placeholder="Password" id="password" value="PUTRI R" required>
                 </div>
                 <button type="submit" class="login-btn">Sign in</button>
             </form>
@@ -1023,7 +1135,7 @@
         <!-- Premium Header -->
         <header class="app-header">
             <div class="header-left">
-                <div class="hamburger" id="hamburgerBtn" onclick="toggleMenu()">
+                <div class="hamburger" id="PUTBtn" onclick="toggleMenu()">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -1031,44 +1143,49 @@
                 <div class="logo">flō</div>
             </div>
             <div class="header-right">
-                <div class="icon-btn">
+                <div class="icon-btn" onclick="showToast('Search feature')">
                     <i class="fas fa-search"></i>
                 </div>
-                <div class="icon-btn">
+                <div class="icon-btn" onclick="showToast('No new notifications')">
                     <i class="fas fa-bell"></i>
-                    <span class="badge">0</span>
+                    <span class="badge" id="notificationBadge">0</span>
                 </div>
-                <div class="icon-btn">
+                <div class="icon-btn" onclick="showToast('No new messages')">
                     <i class="fas fa-envelope"></i>
-                    <span class="badge">0</span>
+                    <span class="badge" id="messageBadge">0</span>
                 </div>
                 
-                <!-- Clickable Profile with Dropdown -->
+                <!-- Clickable Profile with Working Dropdown -->
                 <div class="profile-container">
-                    <div class="user-profile" onclick="toggleProfileDropdown()">
+                    <div class="user-profile" onclick="toggleProfileDropdown(event)">
                         <div class="avatar">A</div>
                         <span>Admin</span>
                         <i class="fas fa-chevron-down" style="font-size: 0.8em; color: var(--gray);"></i>
                     </div>
                     
-                    <!-- Dropdown Menu -->
+                    <!-- Dropdown Menu - ALL ITEMS -->
                     <div class="profile-dropdown" id="profileDropdown">
                         <div class="dropdown-header">
                             <div class="name">Admin User</div>
-                            <div class="email">admin@flow.com</div>
+                            <div class="email">admin@w.com</div>
                         </div>
-                        <div class="dropdown-item">
+                        <div class="dropdown-item" onclick="showSection('profile'); toggleProfileDropdown(); closeMenu()">
                             <i class="fas fa-user"></i>
-                            <span>Profile</span>
+                            <span>My Profile</span>
                         </div>
-                        <div class="dropdown-item">
+                        <div class="dropdown-item" onclick="showSection('settings'); toggleProfileDropdown(); closeMenu()">
                             <i class="fas fa-cog"></i>
                             <span>Settings</span>
                         </div>
-                        <div class="dropdown-item">
-                            <i class="fas fa-help"></i>
-                            <span>Help</span>
+                        <div class="dropdown-item" onclick="showSection('billing'); toggleProfileDropdown(); closeMenu()">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Billing</span>
                         </div>
+                        <div class="dropdown-item" onclick="showSection('support'); toggleProfileDropdown(); closeMenu()">
+                            <i class="fas fa-headset"></i>
+                            <span>Support</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
                         <div class="dropdown-item logout" onclick="logout()">
                             <i class="fas fa-sign-out-alt"></i>
                             <span>Logout</span>
@@ -1082,7 +1199,7 @@
         <div class="sidebar" id="sidebarMenu">
             <div class="sidebar-header">
                 <h2>flō</h2>
-                <p>Zero • Premium</p>
+                <p>Complete Working System</p>
             </div>
             <div class="sidebar-content">
                 <div class="menu-group">
@@ -1094,7 +1211,7 @@
                     <div class="menu-item" onclick="showSection('customers'); closeMenu()">
                         <i class="fas fa-users"></i>
                         <span>Customers</span>
-                        <span class="menu-badge">0</span>
+                        <span class="menu-badge" id="customerCount">0</span>
                     </div>
                     <div class="menu-item" onclick="showSection('maps'); closeMenu()">
                         <i class="fas fa-map-marked-alt"></i>
@@ -1129,6 +1246,10 @@
 
                 <div class="menu-group">
                     <div class="menu-group-title">System</div>
+                    <div class="menu-item" onclick="showSection('profile'); closeMenu()">
+                        <i class="fas fa-user"></i>
+                        <span>Profile</span>
+                    </div>
                     <div class="menu-item" onclick="showSection('settings'); closeMenu()">
                         <i class="fas fa-cog"></i>
                         <span>Settings</span>
@@ -1154,31 +1275,31 @@
         <div class="main-content">
             <!-- DASHBOARD SECTION -->
             <div class="section active" id="dashboardSection">
-                <!-- Stats Cards - SEMUA NOL -->
+                <!-- Stats Cards - Dynamic -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-users"></i></div>
-                        <div class="stat-value">0</div>
+                        <div class="stat-value" id="totalCustomers">0</div>
                         <div class="stat-label">Total customers</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-wifi"></i></div>
-                        <div class="stat-value">0</div>
+                        <div class="stat-value" id="activeCustomers">0</div>
                         <div class="stat-label">Active</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
-                        <div class="stat-value">$0</div>
-                        <div class="stat-label">Revenue</div>
+                        <div class="stat-value" id="totalRevenue">$0</div>
+                        <div class="stat-label">Monthly Revenue</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="stat-value">0</div>
+                        <div class="stat-value" id="totalLocations">0</div>
                         <div class="stat-label">Locations</div>
                     </div>
                 </div>
 
-                <!-- QUICK ADD WIDGETS - FITUR ADD DI DASHBOARD -->
+                <!-- QUICK ADD WIDGETS -->
                 <div class="quick-add-grid">
                     <div class="quick-add-card" onclick="openModal('addCustomerModal')">
                         <div class="quick-add-icon"><i class="fas fa-user-plus"></i></div>
@@ -1192,50 +1313,32 @@
                     </div>
                 </div>
 
-                <!-- Charts and Activity - SEMUA KOSONG -->
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <i class="fas fa-chart-line"></i>
-                            <span class="feature-title">Revenue trend</span>
-                        </div>
-                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; color: var(--gray);">
-                            No data available
-                        </div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <i class="fas fa-users"></i>
-                            <span class="feature-title">New customers</span>
-                        </div>
-                        <div style="font-size: 3em; font-weight: 600; margin: 20px 0;">0</div>
-                        <div style="color: var(--gray);">this week</div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <i class="fas fa-clock"></i>
-                            <span class="feature-title">Expiring soon</span>
-                        </div>
-                        <div style="font-size: 3em; font-weight: 600; margin: 20px 0;">0</div>
-                        <div style="color: var(--gray);">customers</div>
-                    </div>
-                </div>
-
-                <!-- Recent Activity - KOSONG -->
+                <!-- Recent Customers -->
                 <div class="table-container">
-                    <h3 style="margin-bottom: 20px;">Recent activity</h3>
-                    <table>
-                        <tr>
-                            <td colspan="5" style="text-align: center; color: var(--gray); padding: 40px;">
-                                <i class="fas fa-inbox" style="font-size: 2em; margin-bottom: 10px;"></i><br>
-                                No recent activity
-                            </td>
-                        </tr>
+                    <h3 style="margin-bottom: 20px;">Recent Customers</h3>
+                    <table id="recentCustomersTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Phone</th>
+                                <th>Package</th>
+                                <th>Status</th>
+                                <th>Revenue</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentCustomersBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; color: var(--gray); padding: 40px;">
+                                    <i class="fas fa-user-plus" style="font-size: 2em; margin-bottom: 10px;"></i><br>
+                                    Click "Add Customer" to get started
+                                </td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- CUSTOMERS SECTION -->
+            <!-- CUSTOMERS SECTION - WITH EDIT & DELETE -->
             <div class="section" id="customersSection">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
                     <h1 style="font-family: 'Space Grotesk', sans-serif;">Customers</h1>
@@ -1244,23 +1347,24 @@
                     </button>
                 </div>
 
-                <!-- Tabel Kosong -->
+                <!-- Customer Table with Edit/Delete -->
                 <div class="table-container">
-                    <table>
+                    <table id="customersTable">
                         <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Phone</th>
                                 <th>Package</th>
+                                <th>Monthly</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="customersTableBody">
                             <tr>
-                                <td colspan="5" style="text-align: center; color: var(--gray); padding: 60px;">
+                                <td colspan="6" style="text-align: center; color: var(--gray); padding: 60px;">
                                     <i class="fas fa-user-slash" style="font-size: 2em; margin-bottom: 10px;"></i><br>
-                                    No customers yet
+                                    No customers yet. Click "Add customer" to create one.
                                 </td>
                             </tr>
                         </tbody>
@@ -1273,20 +1377,21 @@
                 <h1 style="font-family: 'Space Grotesk', sans-serif; margin-bottom: 30px;">Maps & Location</h1>
                 
                 <div class="map-controls">
-                    <button class="map-btn"><i class="fas fa-road"></i> Street</button>
-                    <button class="map-btn"><i class="fas fa-satellite"></i> Satellite</button>
-                    <button class="map-btn"><i class="fas fa-mountain"></i> Terrain</button>
+                    <button class="map-btn" onclick="setMapLayer('street')"><i class="fas fa-road"></i> Street</button>
+                    <button class="map-btn" onclick="setMapLayer('satellite')"><i class="fas fa-satellite"></i> Satellite</button>
+                    <button class="map-btn" onclick="setMapLayer('terrain')"><i class="fas fa-mountain"></i> Terrain</button>
                     <button class="map-btn" onclick="getUserLocation()"><i class="fas fa-location-arrow"></i> My location</button>
+                    <button class="map-btn" onclick="showCustomerLocations()"><i class="fas fa-users"></i> Show customers</button>
                 </div>
 
                 <div class="map-container">
                     <div id="map"></div>
                     
-                    <!-- GPS Panel with Zero Values -->
+                    <!-- GPS Panel -->
                     <div class="gps-panel">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
                             <span><i class="fas fa-satellite-dish" style="color: var(--primary);"></i> GPS Signal</span>
-                            <span style="color: var(--gray);">Waiting...</span>
+                            <span style="color: var(--gray);" id="gpsStatus">Waiting...</span>
                         </div>
                         <div class="accuracy-meter">
                             <div class="accuracy-fill" id="accuracyFill" style="width: 0%;"></div>
@@ -1307,250 +1412,870 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Nearby Customers - Kosong -->
-                <div class="feature-grid" style="margin-top: 24px;">
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <i class="fas fa-users"></i>
-                            <span class="feature-title">Nearby customers</span>
-                        </div>
-                        <div style="text-align: center; color: var(--gray); padding: 20px;">
-                            No customers nearby
-                        </div>
-                    </div>
-                    <div class="feature-card">
-                        <div class="feature-header">
-                            <i class="fas fa-chart-line"></i>
-                            <span class="feature-title">Coverage stats</span>
-                        </div>
-                        <div style="margin: 12px 0;">📍 0 tracked points</div>
-                        <div style="margin: 12px 0;">📊 0 km² coverage</div>
-                    </div>
-                </div>
             </div>
 
-            <!-- Other sections with zero values -->
+            <!-- ANALYTICS SECTION -->
             <div class="section" id="analyticsSection">
                 <h1 style="font-family: 'Space Grotesk', sans-serif;">Analytics</h1>
                 <div class="feature-grid">
-                    <div class="feature-card">📈 No data available</div>
-                    <div class="feature-card">📊 No data available</div>
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <i class="fas fa-chart-line"></i>
+                            <span class="feature-title">Customer Growth</span>
+                        </div>
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; color: var(--gray);">
+                            <span id="analyticsGrowth">0 customers</span>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <i class="fas fa-dollar-sign"></i>
+                            <span class="feature-title">Revenue Overview</span>
+                        </div>
+                        <div style="height: 200px; display: flex; align-items: center; justify-content: center; color: var(--gray);">
+                            <span id="analyticsRevenue">$0</span>
+                        </div>
+                    </div>
                 </div>
             </div>
 
+            <!-- BILLING SECTION -->
             <div class="section" id="billingSection">
                 <h1 style="font-family: 'Space Grotesk', sans-serif;">Billing</h1>
                 <div class="table-container">
-                    <table>
-                        <tr><td colspan="4" style="text-align: center; padding: 40px;">No transactions</td></tr>
+                    <table id="billingTable">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Package</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="billingTableBody">
+                            <tr>
+                                <td colspan="5" style="text-align: center; padding: 40px;">No transactions yet</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>
 
+            <!-- INVENTORY SECTION -->
             <div class="section" id="inventorySection">
                 <h1 style="font-family: 'Space Grotesk', sans-serif;">Inventory</h1>
                 <div class="stats-grid">
-                    <div class="stat-card">Routers: 0</div>
-                    <div class="stat-card">Cables: 0</div>
-                </div>
-            </div>
-
-            <div class="section" id="calendarSection">
-                <h1 style="font-family: 'Space Grotesk', sans-serif;">Calendar</h1>
-                <div class="feature-card">
-                    <div style="text-align: center; padding: 20px;">No scheduled events</div>
-                </div>
-            </div>
-
-            <div class="section" id="tasksSection">
-                <h1 style="font-family: 'Space Grotesk', sans-serif;">Tasks</h1>
-                <div class="feature-card">
-                    <div style="text-align: center; padding: 20px;">No tasks</div>
-                </div>
-            </div>
-
-            <div class="section" id="settingsSection">
-                <h1 style="font-family: 'Space Grotesk', sans-serif;">Settings</h1>
-                <div class="feature-card">
-                    <div class="form-group">
-                        <label>Company name</label>
-                        <input type="text" value="flō">
+                    <div class="stat-card">
+                        <div class="stat-value" id="routerCount">0</div>
+                        <div class="stat-label">Routers</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="cableCount">0</div>
+                        <div class="stat-label">Cables (m)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="apCount">0</div>
+                        <div class="stat-label">Access Points</div>
                     </div>
                 </div>
             </div>
 
+            <!-- CALENDAR SECTION - ACCURATE WORKING CALENDAR -->
+            <div class="section" id="calendarSection">
+                <h1 style="font-family: 'Space Grotesk', sans-serif; margin-bottom: 30px;">Schedule Calendar</h1>
+                <div class="calendar-container">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+
+            <!-- TASKS SECTION -->
+            <div class="section" id="tasksSection">
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Tasks</h1>
+                <div class="feature-grid" id="tasksList">
+                    <div class="feature-card">
+                        <div style="display: flex; justify-content: space-between;">
+                            <span>No tasks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROFILE SECTION -->
+            <div class="section" id="profileSection">
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">My Profile</h1>
+                <div class="feature-card">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input type="text" value="admin" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" value="admin@flow.com" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <input type="text" value="Administrator" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS SECTION -->
+            <div class="section" id="settingsSection">
+                <h1 style="font-family: 'Space Grotesk', sans-serif;">Settings</h1>
+                <div class="feature-card">
+                    <div class="form-group">
+                        <label>Company Name</label>
+                        <input type="text" value="flō Networks">
+                    </div>
+                    <div class="form-group">
+                        <label>Currency</label>
+                        <select>
+                            <option>USD ($)</option>
+                            <option>EUR (€)</option>
+                            <option>IDR (Rp)</option>
+                        </select>
+                    </div>
+                    <button class="btn" onclick="showToast('Settings saved')">Save Settings</button>
+                </div>
+            </div>
+
+            <!-- SUPPORT SECTION -->
             <div class="section" id="supportSection">
                 <h1 style="font-family: 'Space Grotesk', sans-serif;">Support</h1>
                 <div class="feature-card">
-                    <p>📞 support@flow.com</p>
+                    <p><i class="fas fa-envelope"></i> support@flow.com</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <p><i class="fas fa-clock"></i> 24/7 Support</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Add Customer Modal -->
+    <!-- ADD CUSTOMER MODAL -->
     <div class="modal" id="addCustomerModal">
         <div class="modal-content">
-            <h2>Add customer</h2>
-            <form onsubmit="event.preventDefault(); addCustomer();">
+            <h2>Add New Customer</h2>
+            <form id="addCustomerForm">
                 <div class="form-group">
-                    <label>Full name</label>
-                    <input type="text" id="customerName" required>
+                    <label>Full name *</label>
+                    <input type="text" id="customerName" required placeholder="John Doe">
                 </div>
                 <div class="form-group">
-                    <label>Phone</label>
-                    <input type="tel" id="customerPhone" required>
+                    <label>Phone number *</label>
+                    <input type="tel" id="customerPhone" required placeholder="+62 812-3456-7890">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="customerEmail" placeholder="john@example.com">
                 </div>
                 <div class="form-group">
                     <label>Package</label>
                     <select id="customerPackage">
-                        <option>Basic 10Mbps</option>
-                        <option>Standard 20Mbps</option>
-                        <option>Premium 50Mbps</option>
+                        <option value="Basic 10Mbps" data-price="15">Basic 10Mbps - 200K</option>
+                        <option value="Standard 15Mbps" data-price="25">Standard 20Mbps - 250K</option>
+                        <option value="Premium 20Mbps" data-price="40">Premium 25Mbps - 300K</option>
+                        <option value="Ultra 30Mbps" data-price="75">Ultra 30Mbps - 350K</option>
+                        <option value="VVIP 40Mbps" data-price="75">VVIP 40Mbps - 400K</option>
                     </select>
                 </div>
-                <button type="submit" class="btn" style="width: 100%;">Save</button>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="customerAddress" placeholder="Customer address">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('addCustomerModal')">Cancel</button>
+                    <button type="submit" class="btn" style="flex:2;">Save Customer</button>
+                </div>
             </form>
         </div>
     </div>
 
-    <!-- Add Payment Modal -->
-    <div class="modal" id="addPaymentModal">
+    <!-- EDIT CUSTOMER MODAL -->
+    <div class="modal" id="editCustomerModal">
         <div class="modal-content">
-            <h2>Record payment</h2>
-            <form onsubmit="event.preventDefault(); addPayment();">
+            <h2>Edit Customer</h2>
+            <form id="editCustomerForm">
+                <input type="hidden" id="editCustomerId">
                 <div class="form-group">
-                    <label>Customer</label>
-                    <input type="text" placeholder="Search customer..." disabled value="No customers yet">
+                    <label>Full name</label>
+                    <input type="text" id="editCustomerName" required>
                 </div>
                 <div class="form-group">
-                    <label>Amount</label>
-                    <input type="number" placeholder="0">
+                    <label>Phone number</label>
+                    <input type="tel" id="editCustomerPhone" required>
                 </div>
-                <button type="submit" class="btn" style="width: 100%;" disabled>Save</button>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="editCustomerEmail">
+                </div>
+                <div class="form-group">
+                    <label>Package</label>
+                    <select id="editCustomerPackage">
+                        <option value="Basic 10Mbps" data-price="15">Basic 10Mbps - 200K</option>
+                        <option value="Standard 15Mbps" data-price="25">Standard 20Mbps - 250K</option>
+                        <option value="Premium 20Mbps" data-price="40">Premium 25Mbps - 300K</option>
+                        <option value="Ultra 30Mbps" data-price="75">Ultra 30Mbps - 350K</option>
+                        <option value="VVIP 40Mbps" data-price="85">VVIP 40Mbps - 400K</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="editCustomerAddress">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('editCustomerModal')">Cancel</button>
+                    <button type="submit" class="btn" style="flex:2;">Update Customer</button>
+                </div>
             </form>
         </div>
+    </div>
+
+    <!-- ADD PAYMENT MODAL -->
+    <div class="modal" id="addPaymentModal">
+        <div class="modal-content">
+            <h2>Record Payment</h2>
+            <form id="addPaymentForm">
+                <div class="form-group">
+                    <label>Customer</label>
+                    <select id="paymentCustomer" required>
+                        <option value="">Select customer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount ($)</label>
+                    <input type="number" id="paymentAmount" required min="1" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label>Payment Date</label>
+                    <input type="date" id="paymentDate" required value="<?php echo date('Y-m-d'); ?>">
+                </div>
+                <div class="form-group">
+                    <label>Method</label>
+                    <select id="paymentMethod">
+                        <option>Cash</option>
+                        <option>Bank Transfer</option>
+                        <option>Credit Card</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('addPaymentModal')">Cancel</button>
+                    <button type="submit" class="btn" style="flex:2;">Record Payment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DELETE CONFIRMATION MODAL -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <h2 style="color: var(--danger);">Confirm Delete</h2>
+            <p style="margin: 20px 0; color: var(--gray);">Are you sure you want to delete this customer? This action cannot be undone.</p>
+            <input type="hidden" id="deleteCustomerId">
+            <div style="display: flex; gap: 10px;">
+                <button class="btn btn-outline" style="flex:1;" onclick="closeModal('deleteModal')">Cancel</button>
+                <button class="btn btn-danger" style="flex:1;" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span id="toastMessage">Action completed</span>
     </div>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
     
     <script>
-        // Login
+        // ==================== DATA STORAGE ====================
+        let customers = JSON.parse(localStorage.getItem('customers')) || [];
+        let payments = JSON.parse(localStorage.getItem('payments')) || [];
+        let calendarEvents = JSON.parse(localStorage.getItem('calendarEvents')) || [];
+        
+        // Package prices mapping
+        const packagePrices = {
+            'Basic 10Mbps': 15,
+            'Standard 20Mbps': 25,
+            'Premium 25Mbps': 40,
+            'Ultra 30Mbps': 75,
+            'VVIP 40Mbps' : 85,
+            
+        };
+        
+        // ==================== LOGIN ====================
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('mainApp').style.display = 'block';
             initMap();
             startGPS();
+            initCalendar();
+            updateAllDisplays();
+            showToast('Welcome back, Admin!');
         });
 
-        // Menu functions
+        // ==================== PROFILE DROPDOWN ====================
+        function toggleProfileDropdown(event) {
+            if (event) {
+                event.stopPropagation();
+            }
+            document.getElementById('profileDropdown').classList.toggle('active');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('profileDropdown');
+            const profile = document.querySelector('.user-profile');
+            
+            if (dropdown && profile && !profile.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        // ==================== MENU FUNCTIONS ====================
         function toggleMenu() {
             document.getElementById('sidebarMenu').classList.toggle('open');
             document.getElementById('menuOverlay').classList.toggle('active');
-            document.getElementById('hamburgerBtn').classList.toggle('active');
+            document.getElementById('STARSBtn').classList.toggle('active');
         }
 
         function closeMenu() {
             document.getElementById('sidebarMenu').classList.remove('open');
             document.getElementById('menuOverlay').classList.remove('active');
-            document.getElementById('hamburgerBtn').classList.remove('active');
+            document.getElementById('STARSBtn').classList.remove('active');
         }
 
-        // Profile dropdown
-        function toggleProfileDropdown() {
-            document.getElementById('profileDropdown').classList.toggle('active');
-        }
-
-        // Close dropdown when clicking outside
-        window.addEventListener('click', function(e) {
-            const dropdown = document.getElementById('profileDropdown');
-            const profile = document.querySelector('.user-profile');
-            
-            if (!profile.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.remove('active');
-            }
-        });
-
-        // Show section
+        // ==================== SHOW SECTION ====================
         function showSection(section) {
             document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
-            document.getElementById(section + 'Section').classList.add('active');
-            event.target.closest('.menu-item').classList.add('active');
+            
+            const sectionId = section + 'Section';
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update active menu
+            document.querySelectorAll('.menu-item').forEach(item => {
+                if (item.querySelector('span').textContent.toLowerCase() === section.toLowerCase()) {
+                    item.classList.add('active');
+                }
+            });
             
             if (section === 'maps' && map) {
                 setTimeout(() => map.invalidateSize(), 100);
             }
+            if (section === 'customers') {
+                displayCustomers();
+            }
+            if (section === 'calendar') {
+                setTimeout(() => {
+                    if (calendar) calendar.render();
+                }, 100);
+            }
         }
 
-        // Map
+        // ==================== CUSTOMER FUNCTIONS ====================
+        function addCustomer(event) {
+            event.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            const email = document.getElementById('customerEmail').value.trim() || '-';
+            const package_sel = document.getElementById('customerPackage').value;
+            const address = document.getElementById('customerAddress').value.trim() || '-';
+            const price = packagePrices[package_sel] || 25;
+            
+            if (!name || !phone) {
+                showToast('Please fill in required fields');
+                return;
+            }
+            
+            // Create customer object
+            const customer = {
+                id: Date.now(),
+                name: name,
+                phone: phone,
+                email: email,
+                package: package_sel,
+                price: price,
+                address: address,
+                status: 'active',
+                date: new Date().toISOString().split('T')[0],
+                location: getRandomLocation()
+            };
+            
+            customers.push(customer);
+            localStorage.setItem('customers', JSON.stringify(customers));
+            
+            // Add to calendar (installation after 2 days)
+            const installDate = new Date();
+            installDate.setDate(installDate.getDate() + 2);
+            calendarEvents.push({
+                id: 'event-' + Date.now(),
+                title: 'Install: ' + name,
+                start: installDate.toISOString().split('T')[0],
+                allDay: true,
+                backgroundColor: '#6366f1'
+            });
+            localStorage.setItem('calendarEvents', JSON.stringify(calendarEvents));
+            
+            updateAllDisplays();
+            closeModal('addCustomerModal');
+            document.getElementById('addCustomerForm').reset();
+            showToast('Customer added successfully!');
+            
+            // Refresh calendar
+            if (calendar) {
+                calendar.refetchEvents();
+            }
+        }
+
+        // Edit customer
+        function editCustomer(id) {
+            const customer = customers.find(c => c.id === id);
+            if (!customer) return;
+            
+            document.getElementById('editCustomerId').value = customer.id;
+            document.getElementById('editCustomerName').value = customer.name;
+            document.getElementById('editCustomerPhone').value = customer.phone;
+            document.getElementById('editCustomerEmail').value = customer.email;
+            document.getElementById('editCustomerPackage').value = customer.package;
+            document.getElementById('editCustomerAddress').value = customer.address;
+            
+            openModal('editCustomerModal');
+        }
+
+        // Update customer
+        function updateCustomer(event) {
+            event.preventDefault();
+            
+            const id = parseInt(document.getElementById('editCustomerId').value);
+            const index = customers.findIndex(c => c.id === id);
+            
+            if (index !== -1) {
+                customers[index] = {
+                    ...customers[index],
+                    name: document.getElementById('editCustomerName').value,
+                    phone: document.getElementById('editCustomerPhone').value,
+                    email: document.getElementById('editCustomerEmail').value,
+                    package: document.getElementById('editCustomerPackage').value,
+                    price: packagePrices[document.getElementById('editCustomerPackage').value] || 25,
+                    address: document.getElementById('editCustomerAddress').value
+                };
+                
+                localStorage.setItem('customers', JSON.stringify(customers));
+                updateAllDisplays();
+                closeModal('editCustomerModal');
+                showToast('Customer updated successfully');
+            }
+        }
+
+        // Delete customer
+        function deleteCustomer(id) {
+            document.getElementById('deleteCustomerId').value = id;
+            openModal('deleteModal');
+        }
+
+        function confirmDelete() {
+            const id = parseInt(document.getElementById('deleteCustomerId').value);
+            customers = customers.filter(c => c.id !== id);
+            localStorage.setItem('customers', JSON.stringify(customers));
+            
+            updateAllDisplays();
+            closeModal('deleteModal');
+            showToast('Customer deleted successfully');
+        }
+
+        // Display customers
+        function displayCustomers() {
+            const tbody = document.getElementById('customersTableBody');
+            const recentBody = document.getElementById('recentCustomersBody');
+            
+            if (customers.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: var(--gray); padding: 60px;">
+                            <i class="fas fa-user-slash" style="font-size: 2em; margin-bottom: 10px;"></i><br>
+                            No customers yet. Click "Add customer" to create one.
+                        </td>
+                    </tr>
+                `;
+                if (recentBody) {
+                    recentBody.innerHTML = `
+                        <tr>
+                            <td colspan="5" style="text-align: center; color: var(--gray); padding: 40px;">
+                                <i class="fas fa-user-plus" style="font-size: 2em; margin-bottom: 10px;"></i><br>
+                                Click "Add Customer" to get started
+                            </td>
+                        </tr>
+                    `;
+                }
+                return;
+            }
+            
+            // Build customers table
+            let html = '';
+            customers.slice().reverse().forEach(c => {
+                html += `
+                    <tr>
+                        <td>${c.name}</td>
+                        <td>${c.phone}</td>
+                        <td>${c.package}</td>
+                        <td>$${c.price || 25}</td>
+                        <td><span class="badge badge-success">Active</span></td>
+                        <td>
+                            <button class="action-btn" onclick="editCustomer(${c.id})" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn delete" onclick="deleteCustomer(${c.id})" title="Delete">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+            
+            // Build recent customers (last 5)
+            let recentHtml = '';
+            const recent = customers.slice(-5).reverse();
+            recent.forEach(c => {
+                recentHtml += `
+                    <tr>
+                        <td>${c.name}</td>
+                        <td>${c.phone}</td>
+                        <td>${c.package}</td>
+                        <td><span class="badge badge-success">Active</span></td>
+                        <td>$${c.price || 25}</td>
+                    </tr>
+                `;
+            });
+            if (recentBody) {
+                recentBody.innerHTML = recentHtml;
+            }
+        }
+
+        // ==================== PAYMENT FUNCTIONS ====================
+        function addPayment(event) {
+            event.preventDefault();
+            
+            const customerId = parseInt(document.getElementById('paymentCustomer').value);
+            const amount = parseFloat(document.getElementById('paymentAmount').value);
+            const date = document.getElementById('paymentDate').value;
+            const method = document.getElementById('paymentMethod').value;
+            
+            if (!customerId || !amount) {
+                showToast('Please fill all fields');
+                return;
+            }
+            
+            const customer = customers.find(c => c.id === customerId);
+            
+            const payment = {
+                id: Date.now(),
+                customerId: customerId,
+                customerName: customer ? customer.name : 'Unknown',
+                amount: amount,
+                date: date,
+                method: method
+            };
+            
+            payments.push(payment);
+            localStorage.setItem('payments', JSON.stringify(payments));
+            
+            // Update customer status (paid)
+            if (customer) {
+                customer.lastPayment = date;
+                customer.totalPaid = (customer.totalPaid || 0) + amount;
+                localStorage.setItem('customers', JSON.stringify(customers));
+            }
+            
+            updateAllDisplays();
+            closeModal('addPaymentModal');
+            document.getElementById('addPaymentForm').reset();
+            showToast('Payment recorded successfully');
+        }
+
+        // Populate payment customer dropdown
+        function populatePaymentCustomers() {
+            const select = document.getElementById('paymentCustomer');
+            if (!select) return;
+            
+            let options = '<option value="">Select customer</option>';
+            customers.forEach(c => {
+                options += `<option value="${c.id}">${c.name} - ${c.package}</option>`;
+            });
+            select.innerHTML = options;
+        }
+
+        // ==================== CALENDAR FUNCTIONS ====================
+        let calendar;
+        function initCalendar() {
+            const calendarEl = document.getElementById('calendar');
+            if (!calendarEl) return;
+            
+            calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                themeSystem: 'standard',
+                height: 600,
+                events: getCalendarEvents(),
+                eventClick: function(info) {
+                    showToast('Event: ' + info.event.title);
+                },
+                dateClick: function(info) {
+                    const title = prompt('Enter event title:');
+                    if (title) {
+                        calendar.addEvent({
+                            title: title,
+                            start: info.dateStr,
+                            allDay: true,
+                            backgroundColor: '#6366f1'
+                        });
+                        
+                        // Save to storage
+                        calendarEvents.push({
+                            id: 'event-' + Date.now(),
+                            title: title,
+                            start: info.dateStr,
+                            allDay: true
+                        });
+                        localStorage.setItem('calendarEvents', JSON.stringify(calendarEvents));
+                        showToast('Event added to calendar');
+                    }
+                }
+            });
+            
+            calendar.render();
+        }
+
+        function getCalendarEvents() {
+            const events = [];
+            
+            // Add customer installations (2 days after creation)
+            customers.forEach(c => {
+                const installDate = new Date(c.date);
+                installDate.setDate(installDate.getDate() + 2);
+                events.push({
+                    id: 'install-' + c.id,
+                    title: 'Install: ' + c.name,
+                    start: installDate.toISOString().split('T')[0],
+                    allDay: true,
+                    backgroundColor: '#6366f1'
+                });
+            });
+            
+            // Add payments
+            payments.forEach(p => {
+                events.push({
+                    id: 'payment-' + p.id,
+                    title: 'Payment: ' + p.customerName + ' $' + p.amount,
+                    start: p.date,
+                    allDay: true,
+                    backgroundColor: '#10b981'
+                });
+            });
+            
+            // Add saved events
+            calendarEvents.forEach(e => {
+                events.push(e);
+            });
+            
+            return events;
+        }
+
+        // ==================== MAP FUNCTIONS ====================
         let map;
+        let mapMarkers = [];
+        
         function initMap() {
-            map = L.map('map').setView([0, 0], 2);
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-                attribution: '© CartoDB'
-            }).addTo(map);
+            map = L.map('map').setView([40.7128, -74.0060], 10);
+            setMapLayer('street');
         }
 
-        // GPS
+        function setMapLayer(layer) {
+            map.eachLayer(l => {
+                if (l instanceof L.TileLayer) map.removeLayer(l);
+            });
+            
+            if (layer === 'street') {
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '© CartoDB'
+                }).addTo(map);
+            } else if (layer === 'satellite') {
+                L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                    attribution: '© Esri'
+                }).addTo(map);
+            }
+        }
+
+        function showCustomerLocations() {
+            mapMarkers.forEach(m => map.removeLayer(m));
+            mapMarkers = [];
+            
+            customers.forEach(c => {
+                if (c.location) {
+                    const marker = L.marker([c.location.lat, c.location.lng]).addTo(map)
+                        .bindPopup(`<b>${c.name}</b><br>${c.package}<br>$${c.price}/mo`);
+                    mapMarkers.push(marker);
+                }
+            });
+            
+            if (customers.length > 0) {
+                showToast('Showing ' + customers.length + ' customer locations');
+            }
+        }
+
+        function getRandomLocation() {
+            return {
+                lat: 40.7128 + (Math.random() - 0.5) * 0.2,
+                lng: -74.0060 + (Math.random() - 0.5) * 0.2
+            };
+        }
+
+        // ==================== GPS FUNCTIONS ====================
         function startGPS() {
             if (navigator.geolocation) {
+                document.getElementById('gpsStatus').textContent = 'Searching...';
+                
                 navigator.geolocation.watchPosition(pos => {
                     document.getElementById('currentLat').textContent = pos.coords.latitude.toFixed(6);
                     document.getElementById('currentLng').textContent = pos.coords.longitude.toFixed(6);
                     document.getElementById('currentAccuracy').textContent = '±' + pos.coords.accuracy.toFixed(1) + 'm';
+                    document.getElementById('gpsStatus').textContent = 'Connected';
                     
-                    // Update accuracy meter
-                    const accuracy = Math.min(100, 100 - (pos.coords.accuracy * 2));
+                    const accuracy = Math.min(100, Math.max(0, 100 - (pos.coords.accuracy * 2)));
                     document.getElementById('accuracyFill').style.width = accuracy + '%';
-                }, null, { enableHighAccuracy: true });
+                }, err => {
+                    document.getElementById('gpsStatus').textContent = 'Error';
+                }, { enableHighAccuracy: true });
             }
         }
 
         function getUserLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(pos => {
-                    map.setView([pos.coords.latitude, pos.coords.longitude], 18);
+                    map.setView([pos.coords.latitude, pos.coords.longitude], 16);
+                    L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(map)
+                        .bindPopup('You are here').openPopup();
                 });
             }
         }
 
-        // Modal functions
+        // ==================== UPDATE ALL DISPLAYS ====================
+        function updateAllDisplays() {
+            // Update counts
+            document.getElementById('totalCustomers').textContent = customers.length;
+            document.getElementById('activeCustomers').textContent = customers.filter(c => c.status === 'active').length;
+            document.getElementById('customerCount').textContent = customers.length;
+            
+            // Calculate revenue
+            const monthlyRevenue = customers.reduce((sum, c) => sum + (c.price || 25), 0);
+            document.getElementById('totalRevenue').textContent = '$' + monthlyRevenue;
+            document.getElementById('analyticsRevenue').textContent = '$' + monthlyRevenue;
+            
+            // Locations
+            document.getElementById('totalLocations').textContent = customers.length;
+            
+            // Analytics
+            document.getElementById('analyticsGrowth').textContent = customers.length + ' customers';
+            
+            // Inventory (demo values)
+            document.getElementById('routerCount').textContent = customers.length * 1;
+            document.getElementById('cableCount').textContent = customers.length * 10;
+            document.getElementById('apCount').textContent = Math.floor(customers.length * 0.5);
+            
+            // Refresh displays
+            displayCustomers();
+            displayBilling();
+            populatePaymentCustomers();
+            
+            // Update calendar if exists
+            if (calendar) {
+                calendar.refetchEvents();
+            }
+        }
+
+        // Display billing
+        function displayBilling() {
+            const tbody = document.getElementById('billingTableBody');
+            if (!tbody) return;
+            
+            if (payments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 40px;">No transactions yet</td></tr>';
+                return;
+            }
+            
+            let html = '';
+            payments.slice(-10).reverse().forEach(p => {
+                html += `
+                    <tr>
+                        <td>${p.date}</td>
+                        <td>${p.customerName}</td>
+                        <td>${p.method}</td>
+                        <td>$${p.amount}</td>
+                        <td><span class="badge badge-success">Paid</span></td>
+                    </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        // ==================== MODAL FUNCTIONS ====================
         function openModal(id) {
             document.getElementById(id).classList.add('active');
+            if (id === 'addPaymentModal') {
+                populatePaymentCustomers();
+            }
         }
 
         function closeModal(id) {
             document.getElementById(id).classList.remove('active');
         }
 
-        // Add customer function (just closes modal since we want zero values)
-        function addCustomer() {
-            alert('Demo: Customer would be added here. Keeping zero values for demo.');
-            closeModal('addCustomerModal');
+        // ==================== TOAST NOTIFICATION ====================
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
         }
 
-        function addPayment() {
-            alert('Demo: Payment would be recorded here. Keeping zero values for demo.');
-            closeModal('addPaymentModal');
-        }
+        // ==================== FORM SUBMISSIONS ====================
+        document.getElementById('addCustomerForm').addEventListener('submit', addCustomer);
+        document.getElementById('editCustomerForm').addEventListener('submit', updateCustomer);
+        document.getElementById('addPaymentForm').addEventListener('submit', addPayment);
 
-        // Logout
+        // ==================== LOGOUT ====================
         function logout() {
             document.getElementById('mainApp').style.display = 'none';
             document.getElementById('loginPage').style.display = 'flex';
             document.getElementById('profileDropdown').classList.remove('active');
+            showToast('Logged out successfully');
         }
 
-        // Click outside modal
+        // ==================== CLICK OUTSIDE MODAL ====================
         window.onclick = function(e) {
             if (e.target.classList.contains('modal')) {
                 e.target.classList.remove('active');
             }
         }
+
+        // ==================== INITIAL LOAD ====================
+        window.onload = function() {
+            updateAllDisplays();
+        };
     </script>
 </body>
 </html>
