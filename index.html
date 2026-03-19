@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFiPro • Hamburger Menu dengan Semua Fitur</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #0a0a0f;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        /* LOGIN PAGE */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px;
+            border-radius: 30px;
+            width: 90%;
+            max-width: 450px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .login-card h1 {
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .login-card input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            font-size: 1em;
+        }
+
+        .login-card button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* MAIN APP */
+        .main-app {
+            display: none;
+            min-height: 100vh;
+            background: #0a0a0f;
+        }
+
+        /* HEADER WITH HAMBURGER MENU */
+        .app-header {
+            background: #1a1a2e;
+            padding: 15px 30px;
+            border-bottom: 3px solid #667eea;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+        }
+
+        .header-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* HAMBURGER MENU BUTTON - 3 GARIS */
+        .hamburger-btn {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .hamburger-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+        }
+
+        .hamburger-btn span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        /* ANIMASI HAMBURGER MENJADI X */
+        .hamburger-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .notification-badge {
+            position: relative;
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff7675;
+            color: white;
+            font-size: 0.7em;
+            padding: 2px 6px;
+            border-radius: 10px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+        /* SIDEBAR MENU - MUNCUL DARI KIRI */
+        .sidebar-menu {
+            position: fixed;
+            top: 0;
+            left: -350px;
+            width: 320px;
+            height: 100vh;
+            background: #1a1a2e;
+            border-right: 2px solid #2a2a3e;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+            box-shadow: 5px 0 30px rgba(0,0,0,0.5);
+        }
+
+        .sidebar-menu.open {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 25px;
+            border-bottom: 2px solid #2a2a3e;
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .sidebar-header p {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .menu-section {
+            padding: 20px 0;
+            border-bottom: 1px solid #2a2a3e;
+        }
+
+        .menu-title {
+            padding: 0 25px;
+            color: #888;
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .menu-items {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-item {
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: #ddd;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background: #252539;
+            border-left-color: #667eea;
+        }
+
+        .menu-item.active {
+            background: linear-gradient(135deg, #667eea20, #764ba220);
+            border-left-color: #667eea;
+            color: white;
+        }
+
+        .menu-item i {
+            width: 25px;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .menu-item.active i {
+            color: white;
+        }
+
+        .menu-badge {
+            background: #667eea;
+            color: white;
+            font-size: 0.7em;
+            padding: 2px 8px;
+            border-radius: 20px;
+            margin-left: auto;
+        }
+
+        .menu-footer {
+            padding: 25px;
+            border-top: 2px solid #2a2a3e;
+            margin-top: 20px;
+        }
+
+        .menu-footer .menu-item {
+            padding: 15px 0;
+        }
+
+        /* OVERLAY SAAT MENU DIBUKA */
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(3px);
+            z-index: 999;
+            display: none;
+        }
+
+        .menu-overlay.active {
+            display: block;
+        }
+
+        /* CONTENT AREA */
+        .content-area {
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* SECTION */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* STATS CARDS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #1a1a2e;
+            border: 1px solid #2a2a3e;
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            color: #888;
+        }
+
+        /* FEATURE GRID */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .feature-card {
+            background: #1a1a2e;
+            border: 1px solid #2a2a3e;
+            border-radius: 20px;
+            padding: 25px;
+        }
+
+        .feature-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* TABLES */
+        .table-container {
+            background: #1a1a2e;
+            border: 1px solid #2a2a3e;
+            border-radius: 20px;
+            padding: 25px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px;
+            color: #667eea;
+            border-bottom: 2px solid #2a2a3e;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #2a2a3e;
+        }
+
+        /* MAP SECTION */
+        .map-container {
+            background: #1a1a2e;
+            border: 1px solid #2a2a3e;
+            border-radius: 20px;
+            padding: 25px;
+        }
+
+        #map {
+            height: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .map-tools {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .map-btn {
+            padding: 12px 20px;
+            background: #252539;
+            border: 1px solid #2a2a3e;
+            border-radius: 12px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .map-btn:hover {
+            background: #667eea;
+        }
+
+        /* ACCURACY PANEL */
+        .accuracy-panel {
+            background: #1a1a2e;
+            border: 1px solid #2a2a3e;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .accuracy-meter {
+            height: 8px;
+            background: #252539;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .accuracy-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00b894, #00cec9);
+            width: 98%;
+        }
+
+        .coord-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .coord-box {
+            background: #252539;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #667eea;
+        }
+
+        /* STATUS BADGES */
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.85em;
+            display: inline-block;
+        }
+
+        .status-active {
+            background: rgba(0, 184, 148, 0.2);
+            color: #00b894;
+        }
+
+        .status-warning {
+            background: rgba(253, 203, 110, 0.2);
+            color: #fdcb6e;
+        }
+
+        .status-danger {
+            background: rgba(255, 118, 117, 0.2);
+            color: #ff7675;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            border: 1px solid #667eea;
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #888;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: #252539;
+            border: 1px solid #2a2a3e;
+            border-radius: 10px;
+            color: white;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header-left .logo {
+                display: none;
+            }
+            
+            .user-info span:not(.user-avatar) {
+                display: none;
+            }
+            
+            .content-area {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN PAGE -->
+    <div class="login-page" id="loginPage">
+        <div class="login-card">
+            <h1><i class="fas fa-wifi"></i> WiFiPro</h1>
+            <p style="color: #666; margin-bottom: 30px;">Hamburger Menu • 3 Garis Kiri Atas</p>
+            <form id="loginForm">
+                <input type="text" placeholder="Username" id="username" value="admin" required>
+                <input type="password" placeholder="Password" id="password" value="admin123" required>
+                <button type="submit"><i class="fas fa-sign-in-alt"></i> MASUK</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div class="main-app" id="mainApp">
+        <!-- HEADER DENGAN HAMBURGER MENU (3 GARIS KIRI ATAS) -->
+        <header class="app-header">
+            <div class="header-container">
+                <div class="header-left">
+                    <!-- TOMBOL HAMBURGER 3 GARIS -->
+                    <div class="hamburger-btn" id="hamburgerBtn" onclick="toggleMenu()">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <div class="logo">
+                        <i class="fas fa-wifi"></i> WiFiPro
+                    </div>
+                </div>
+                <div class="user-info">
+                    <div class="notification-badge">
+                        <i class="fas fa-bell" style="font-size: 1.3em;"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="notification-badge">
+                        <i class="fas fa-envelope" style="font-size: 1.3em;"></i>
+                        <span class="badge">5</span>
+                    </div>
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <span>Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- OVERLAY SAAT MENU DIBUKA -->
+        <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+
+        <!-- SIDEBAR MENU (MUNCUL DARI KIRI KETIKA HAMBURGER DI KLIK) -->
+        <div class="sidebar-menu" id="sidebarMenu">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-wifi"></i> WiFiPro Menu</h2>
+                <p>v2.0 • 14 Menu • 50+ Fitur</p>
+            </div>
+
+            <!-- SEMUA MENU DAN FITUR ADA DI SINI -->
+            <div class="menu-section">
+                <div class="menu-title">MAIN MENU</div>
+                <div class="menu-items">
+                    <div class="menu-item active" onclick="showSection('dashboard'); closeMenu()">
+                        <i class="fas fa-chart-pie"></i>
+                        <span>Dashboard</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('customers'); closeMenu()">
+                        <i class="fas fa-users"></i>
+                        <span>Customers</span>
+                        <span class="menu-badge">127</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('maps'); closeMenu()">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <span>Maps & Location</span>
+                        <span class="menu-badge">GPS</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('analytics'); closeMenu()">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Analytics</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">MANAGEMENT</div>
+                <div class="menu-items">
+                    <div class="menu-item" onclick="showSection('billing'); closeMenu()">
+                        <i class="fas fa-credit-card"></i>
+                        <span>Billing</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('inventory'); closeMenu()">
+                        <i class="fas fa-box"></i>
+                        <span>Inventory</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('calendar'); closeMenu()">
+                        <i class="fas fa-calendar"></i>
+                        <span>Calendar</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('tasks'); closeMenu()">
+                        <i class="fas fa-tasks"></i>
+                        <span>Tasks</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">REPORTS</div>
+                <div class="menu-items">
+                    <div class="menu-item" onclick="showSection('reports'); closeMenu()">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('messages'); closeMenu()">
+                        <i class="fas fa-envelope"></i>
+                        <span>Messages</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('network'); closeMenu()">
+                        <i class="fas fa-network-wired"></i>
+                        <span>Network</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-section">
+                <div class="menu-title">SYSTEM</div>
+                <div class="menu-items">
+                    <div class="menu-item" onclick="showSection('settings'); closeMenu()">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </div>
+                    <div class="menu-item" onclick="showSection('support'); closeMenu()">
+                        <i class="fas fa-headset"></i>
+                        <span>Support</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="menu-footer">
+                <div class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONTENT AREA (SEMUA FITUR TAMPIL DI SINI) -->
+        <div class="content-area">
+            <!-- DASHBOARD SECTION -->
+            <div class="section active" id="dashboardSection">
+                <h1 style="margin-bottom: 30px;"><i class="fas fa-chart-pie"></i> Dashboard</h1>
+                
+                <!-- STATS CARDS -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-users"></i></div>
+                        <div class="stat-value">127</div>
+                        <div class="stat-label">Total Pelanggan</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-wifi"></i></div>
+                        <div class="stat-value">98</div>
+                        <div class="stat-label">Aktif</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="stat-value">Rp 45.8M</div>
+                        <div class="stat-label">Pendapatan</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="stat-value">98</div>
+                        <div class="stat-label">Lokasi</div>
+                    </div>
+                </div>
+
+                <!-- FITUR DASHBOARD -->
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-title"><i class="fas fa-chart-line" style="color: #667eea;"></i> Grafik Pendapatan</div>
+                        <div style="height: 200px; background: #252539; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            📊 Grafik akan tampil di sini
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title"><i class="fas fa-users" style="color: #667eea;"></i> Pelanggan Baru</div>
+                        <p style="font-size: 2em;">15</p>
+                        <p style="color: #888;">Minggu ini</p>
+                        <p style="color: #00b894;"><i class="fas fa-arrow-up"></i> +5 hari ini</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title"><i class="fas fa-clock" style="color: #667eea;"></i> Akan Expired</div>
+                        <p style="font-size: 2em;">8</p>
+                        <p style="color: #888;">Pelanggan</p>
+                        <span class="status-badge status-warning">3 hari lagi</span>
+                    </div>
+                </div>
+
+                <!-- AKTIVITAS TERBARU -->
+                <div class="table-container">
+                    <h3 style="margin-bottom: 20px;">Aktivitas Terbaru</h3>
+                    <table>
+                        <tr>
+                            <td>09:30</td>
+                            <td>Budi Santoso</td>
+                            <td>Pembayaran</td>
+                            <td>Rp 250,000</td>
+                            <td><span class="status-badge status-active">Sukses</span></td>
+                        </tr>
+                        <tr>
+                            <td>09:15</td>
+                            <td>Dewi Lestari</td>
+                            <td>Instalasi</td>
+                            <td>Jl. Sudirman</td>
+                            <td><span class="status-badge status-warning">Proses</span></td>
+                        </tr>
+                        <tr>
+                            <td>08:45</td>
+                            <td>Ahmad Fauzi</td>
+                            <td>Komplain</td>
+                            <td>Jaringan lambat</td>
+                            <td><span class="status-badge status-danger">Pending</span></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- CUSTOMERS SECTION -->
+            <div class="section" id="customersSection">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+                    <h1><i class="fas fa-users"></i> Manajemen Pelanggan</h1>
+                    <button class="btn" onclick="openModal('addModal')">
+                        <i class="fas fa-plus"></i> Tambah
+                    </button>
+                </div>
+
+                <!-- FITUR CUSTOMER -->
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-title"><i class="fas fa-search"></i> Cari Pelanggan</div>
+                        <input type="text" placeholder="Nama / No HP..." style="width: 100%; padding: 12px; background: #252539; border: 1px solid #2a2a3e; border-radius: 10px; color: white;">
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title"><i class="fas fa-filter"></i> Filter</div>
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn-outline btn-sm">Semua</button>
+                            <button class="btn-outline btn-sm">Aktif</button>
+                            <button class="btn-outline btn-sm">Expired</button>
+                        </div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title"><i class="fas fa-download"></i> Export</div>
+                        <button class="btn-sm">Download CSV</button>
+                    </div>
+                </div>
+
+                <!-- TABEL PELANGGAN -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>No HP</th>
+                                <th>Paket</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Budi Santoso</td>
+                                <td>08123456789</td>
+                                <td>Premium 50Mbps</td>
+                                <td><span class="status-badge status-active">Aktif</span></td>
+                                <td>
+                                    <button class="btn-sm"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-sm"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Dewi Lestari</td>
+                                <td>08129876543</td>
+                                <td>Basic 10Mbps</td>
+                                <td><span class="status-badge status-active">Aktif</span></td>
+                                <td>
+                                    <button class="btn-sm"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-sm"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Ahmad Fauzi</td>
+                                <td>08121234567</td>
+                                <td>Standard 20Mbps</td>
+                                <td><span class="status-badge status-warning">Pending</span></td>
+                                <td>
+                                    <button class="btn-sm"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-sm"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- MAPS SECTION -->
+            <div class="section" id="mapsSection">
+                <h1 style="margin-bottom: 30px;"><i class="fas fa-map-marked-alt"></i> Maps & Lokasi Akurat</h1>
+                
+                <!-- MAP TOOLS -->
+                <div class="map-tools">
+                    <button class="map-btn"><i class="fas fa-road"></i> Street</button>
+                    <button class="map-btn"><i class="fas fa-satellite"></i> Satellite</button>
+                    <button class="map-btn"><i class="fas fa-mountain"></i> Terrain</button>
+                    <button class="map-btn" onclick="getUserLocation()"><i class="fas fa-location-arrow"></i> Lokasi Saya</button>
+                    <button class="map-btn"><i class="fas fa-fire"></i> Heatmap</button>
+                </div>
+
+                <!-- ACCURACY PANEL -->
+                <div class="accuracy-panel">
+                    <h4>📍 GPS Real-time</h4>
+                    <div class="accuracy-meter">
+                        <div class="accuracy-fill" style="width: 98%;"></div>
+                    </div>
+                    <div class="coord-grid">
+                        <div class="coord-box">
+                            <label>Latitude</label>
+                            <div id="currentLat">-6.208800</div>
+                        </div>
+                        <div class="coord-box">
+                            <label>Longitude</label>
+                            <div id="currentLng">106.845600</div>
+                        </div>
+                        <div class="coord-box">
+                            <label>Akurasi</label>
+                            <div id="currentAccuracy">±3.2m</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MAP -->
+                <div class="map-container">
+                    <div id="map"></div>
+                </div>
+
+                <!-- NEARBY CUSTOMERS -->
+                <div class="feature-grid" style="margin-top: 20px;">
+                    <div class="feature-card">
+                        <div class="feature-title"><i class="fas fa-users"></i> Pelanggan Terdekat</div>
+                        <div style="margin: 10px 0;">📍 Budi Santoso - 120m</div>
+                        <div style="margin: 10px 0;">📍 Dewi Lestari - 250m</div>
+                        <div style="margin: 10px 0;">📍 Ahmad Fauzi - 380m</div>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-title"><i class="fas fa-chart-line"></i> Statistik Lokasi</div>
+                        <p>📍 Total titik: 98</p>
+                        <p>📊 Cakupan: 12.5 km²</p>
+                        <p>🎯 Akurasi rata-rata: 3.2m</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION LAINNYA (SINGKAT UNTUK HEMAT TEMPAT) -->
+            <div class="section" id="analyticsSection">
+                <h1>Analytics</h1>
+                <div class="feature-grid">
+                    <div class="feature-card">📈 Grafik Pertumbuhan</div>
+                    <div class="feature-card">📊 Distribusi Paket</div>
+                    <div class="feature-card">💰 Revenue per Bulan</div>
+                </div>
+            </div>
+
+            <div class="section" id="billingSection">
+                <h1>Billing</h1>
+                <div class="table-container">
+                    <table>
+                        <tr><th>Invoice</th><th>Customer</th><th>Jumlah</th><th>Status</th></tr>
+                        <tr><td>INV-001</td><td>Budi</td><td>Rp250,000</td><td><span class="status-badge status-active">Lunas</span></td></tr>
+                        <tr><td>INV-002</td><td>Dewi</td><td>Rp150,000</td><td><span class="status-badge status-warning">Pending</span></td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section" id="inventorySection">
+                <h1>Inventory</h1>
+                <div class="stats-grid">
+                    <div class="stat-card">Router: 234</div>
+                    <div class="stat-card">Kabel: 567</div>
+                    <div class="stat-card">Access Point: 89</div>
+                </div>
+            </div>
+
+            <div class="section" id="calendarSection">
+                <h1>Calendar</h1>
+                <div class="feature-card">
+                    <div>📅 15 Jan - Instalasi Budi</div>
+                    <div>📅 16 Jan - Pembayaran Dewi</div>
+                    <div>📅 17 Jan - Maintenance</div>
+                </div>
+            </div>
+
+            <div class="section" id="tasksSection">
+                <h1>Tasks</h1>
+                <div class="feature-card">
+                    <div>✅ Instalasi Jl. Sudirman</div>
+                    <div>⏳ Follow up pembayaran</div>
+                    <div>✅ Maintenance jaringan</div>
+                </div>
+            </div>
+
+            <div class="section" id="reportsSection">
+                <h1>Reports</h1>
+                <div class="feature-grid">
+                    <div class="feature-card">Laporan Bulanan</div>
+                    <div class="feature-card">Laporan Tahunan</div>
+                </div>
+            </div>
+
+            <div class="section" id="messagesSection">
+                <h1>Messages</h1>
+                <div class="feature-card">
+                    <div>📨 Pesan dari Budi</div>
+                    <div>📨 Notifikasi sistem</div>
+                </div>
+            </div>
+
+            <div class="section" id="networkSection">
+                <h1>Network</h1>
+                <div class="stats-grid">
+                    <div class="stat-card">Uptime: 99.9%</div>
+                    <div class="stat-card">Bandwidth: 450 Mbps</div>
+                </div>
+            </div>
+
+            <div class="section" id="settingsSection">
+                <h1>Settings</h1>
+                <div class="feature-card">
+                    <div class="form-group">
+                        <label>Nama Perusahaan</label>
+                        <input type="text" value="WiFiPro">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" id="supportSection">
+                <h1>Support</h1>
+                <div class="feature-card">
+                    <p>📞 021-1234-5678</p>
+                    <p>📧 support@wifipro.com</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TAMBAH PELANGGAN -->
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <h2 style="margin-bottom: 30px;">Tambah Pelanggan</h2>
+            <form>
+                <div class="form-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" required>
+                </div>
+                <div class="form-group">
+                    <label>No HP</label>
+                    <input type="tel" required>
+                </div>
+                <div class="form-group">
+                    <label>Paket</label>
+                    <select>
+                        <option>Basic 10Mbps</option>
+                        <option>Standard 20Mbps</option>
+                        <option>Premium 50Mbps</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Alamat</label>
+                    <textarea rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Simpan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <script>
+        // LOGIN
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('mainApp').style.display = 'block';
+            initMap();
+            startGPS();
+        });
+
+        // HAMBURGER MENU FUNCTIONS
+        function toggleMenu() {
+            document.getElementById('sidebarMenu').classList.toggle('open');
+            document.getElementById('menuOverlay').classList.toggle('active');
+            document.getElementById('hamburgerBtn').classList.toggle('active');
+        }
+
+        function closeMenu() {
+            document.getElementById('sidebarMenu').classList.remove('open');
+            document.getElementById('menuOverlay').classList.remove('active');
+            document.getElementById('hamburgerBtn').classList.remove('active');
+        }
+
+        // SHOW SECTION
+        function showSection(section) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            // Remove active from all menu items
+            document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+            // Show selected section
+            document.getElementById(section + 'Section').classList.add('active');
+            // Add active to clicked menu
+            event.target.closest('.menu-item').classList.add('active');
+            
+            // Refresh map if maps section
+            if (section === 'maps' && map) {
+                setTimeout(() => map.invalidateSize(), 100);
+            }
+        }
+
+        // MAP
+        let map;
+        function initMap() {
+            map = L.map('map').setView([-6.2088, 106.8456], 15);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+            
+            // Add marker
+            L.marker([-6.2088, 106.8456]).addTo(map)
+                .bindPopup('Jakarta').openPopup();
+        }
+
+        // GPS TRACKING
+        let gpsWatchId;
+        function startGPS() {
+            if (navigator.geolocation) {
+                gpsWatchId = navigator.geolocation.watchPosition(
+                    position => {
+                        document.getElementById('currentLat').textContent = position.coords.latitude.toFixed(6);
+                        document.getElementById('currentLng').textContent = position.coords.longitude.toFixed(6);
+                        document.getElementById('currentAccuracy').textContent = '±' + position.coords.accuracy.toFixed(1) + 'm';
+                    },
+                    error => console.log('GPS Error'),
+                    { enableHighAccuracy: true }
+                );
+            }
+        }
+
+        // GET USER LOCATION
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    map.setView([pos.coords.latitude, pos.coords.longitude], 18);
+                    L.marker([pos.coords.latitude, pos.coords.longitude]).addTo(map)
+                        .bindPopup('Lokasi Anda').openPopup();
+                });
+            }
+        }
+
+        // MODAL
+        function openModal(id) {
+            document.getElementById(id).classList.add('active');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        // LOGOUT
+        function logout() {
+            if (gpsWatchId) navigator.geolocation.clearWatch(gpsWatchId);
+            document.getElementById('mainApp').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'flex';
+        }
+
+        // CLOSE MODAL ON CLICK OUTSIDE
+        window.onclick = function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>
