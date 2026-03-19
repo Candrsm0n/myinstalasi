@@ -1716,7 +1716,7 @@
                     <select id="customerPackage">
                         <option value="Basic 10Mbps" data-price="15">Basic 10Mbps - 200K</option>
                         <option value="Standard 15Mbps" data-price="25">Standard 20Mbps - 250K</option>
-                        <option value="Premium 20Mbps" data-price="40">Premium 25Mbps - 300K</option>
+                        <option value="Premium 25Mbps" data-price="40">Premium 25Mbps - 300K</option>
                         <option value="Ultra 30Mbps" data-price="75">Ultra 30Mbps - 350K</option>
                         <option value="VVIP 40Mbps" data-price="85">VVIP 40Mbps - 400K</option>
                     </select>
@@ -1760,7 +1760,7 @@
                     <select id="editCustomerPackage">
                         <option value="Basic 10Mbps" data-price="15">Basic 10Mbps - 200K</option>
                         <option value="Standard 15Mbps" data-price="25">Standard 20Mbps - 250K</option>
-                        <option value="Premium 20Mbps" data-price="40">Premium 25Mbps - 300K</option>
+                        <option value="Premium 25Mbps" data-price="40">Premium 25Mbps - 300K</option>
                         <option value="Ultra 30Mbps" data-price="75">Ultra 30Mbps - 350K</option>
                         <option value="VVIP 40Mbps" data-pselect="85">VVIP 40Mbps - 400K</option>
                     </select>
@@ -2071,7 +2071,7 @@
             const package_sel = document.getElementById('customerPackage').value;
             const date = document.getElementById('customerDate').value || new Date().toISOString().split('T')[0];
             const address = document.getElementById('customerAddress').value.trim() || '-';
-            const price = packagePrices[package_sel] || 150000;
+            const price = packagePrices[package_sel] || 0;
             
             if (!name || !phone) {
                 showToast('Nama dan telepon harus diisi');
