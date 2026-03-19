@@ -2245,7 +2245,7 @@
                         <td>${c.phone}</td>
                         <td>${c.package}</td>
                         <td><span class="badge badge-success">Aktif</span></td>
-                        <td>Rp ${(c.price || 150000).toLocaleString('id-ID')}</td>
+                        <td>Rp ${(c.price || 0).toLocaleString('id-ID')}</td>
                     </tr>
                 `;
             });
@@ -2404,7 +2404,7 @@
         function generateMonthlyRevenue() {
             const months = 12;
             const data = [];
-            const baseRevenue = customers.reduce((sum, c) => sum + (c.price || 150000), 0);
+            const baseRevenue = customers.reduce((sum, c) => sum + (c.price || 0), 0);
             
             for (let i = 0; i < months; i++) {
                 const variation = 0.8 + Math.random() * 0.4;
@@ -2434,8 +2434,9 @@
             const packages = {
                 'Basic 10Mbps': 0,
                 'Standard 20Mbps': 0,
-                'Premium 50Mbps': 0,
-                'Ultra 100Mbps': 0
+                'Premium 25Mbps': 0,
+                'Ultra 30Mbps': 0,
+                'VVIP 40Mbps': 0,
             };
             
             customers.forEach(c => {
@@ -2466,7 +2467,7 @@
             
             customers.forEach(c => {
                 const pkg = c.package;
-                const price = c.price || 150000;
+                const price = c.price || 0;
                 if (revenue[pkg] !== undefined) {
                     revenue[pkg] += price;
                 } else {
