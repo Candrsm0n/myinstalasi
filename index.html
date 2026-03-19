@@ -1718,7 +1718,7 @@
                         <option value="Standard 15Mbps" data-price="25">Standard 20Mbps - 250K</option>
                         <option value="Premium 20Mbps" data-price="40">Premium 25Mbps - 300K</option>
                         <option value="Ultra 30Mbps" data-price="75">Ultra 30Mbps - 350K</option>
-                        <option value="VVIP 40Mbps" data-price="75">VVIP 40Mbps - 400K</option>
+                        <option value="VVIP 40Mbps" data-price="85">VVIP 40Mbps - 400K</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1762,7 +1762,7 @@
                         <option value="Standard 15Mbps" data-price="25">Standard 20Mbps - 250K</option>
                         <option value="Premium 20Mbps" data-price="40">Premium 25Mbps - 300K</option>
                         <option value="Ultra 30Mbps" data-price="75">Ultra 30Mbps - 350K</option>
-                        <option value="VVIP 40Mbps" data-price="75">VVIP 40Mbps - 400K</option>
+                        <option value="VVIP 40Mbps" data-pselect="85">VVIP 40Mbps - 400K</option>
                     </select>
                 </div>
                 <div class="form-group">
@@ -1965,10 +1965,11 @@
         
         // Package prices in Rupiah
         const packagePrices = {
-            'Basic 10Mbps': 150000,
+            'Basic 10Mbps': 200000,
             'Standard 20Mbps': 250000,
-            'Premium 50Mbps': 400000,
-            'Ultra 100Mbps': 750000
+            'Premium 25Mbps': 300000,
+            'Ultra 30Mbps': 350000,
+            'VVIP 40Mbps': 400000,
         };
 
         // ==================== DATE PICKER INITIALIZATION ====================
@@ -2458,8 +2459,9 @@
             const revenue = {
                 'Basic 10Mbps': 0,
                 'Standard 20Mbps': 0,
-                'Premium 50Mbps': 0,
-                'Ultra 100Mbps': 0
+                'Premium 25Mbps': 0,
+                'Ultra 30Mbps': 0,
+                'VVIP 40Mbps': 0,
             };
             
             customers.forEach(c => {
@@ -2696,7 +2698,7 @@
             document.getElementById('activeCustomers').textContent = customers.filter(c => c.status === 'active').length;
             document.getElementById('customerCount').textContent = customers.length;
             
-            const monthlyRevenue = customers.reduce((sum, c) => sum + (c.price || 150000), 0);
+            const monthlyRevenue = customers.reduce((sum, c) => sum + (c.price || 0), 0);
             document.getElementById('totalRevenue').textContent = 'Rp ' + monthlyRevenue.toLocaleString('id-ID');
             
             document.getElementById('totalLocations').textContent = customers.length;
